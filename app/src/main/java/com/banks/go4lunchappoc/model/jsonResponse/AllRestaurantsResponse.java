@@ -2,7 +2,7 @@ package com.banks.go4lunchappoc.model.jsonResponse;
 
 import java.util.List;
 
-public class RestaurantResultResponse {
+public class AllRestaurantsResponse {
 
     private List<RestaurantResponse> results;
 
@@ -17,7 +17,7 @@ public class RestaurantResultResponse {
 
     // CONSTRUCTOR
 
-    public RestaurantResultResponse(List<RestaurantResponse> results) {
+    public AllRestaurantsResponse(List<RestaurantResponse> results) {
         this.results = results;
     }
 }
