@@ -68,7 +68,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
                             + restaurant.getUrlPictureRestaurant() +"&key="+ BuildConfig.RR_KEY)
                     .into(holder.binding.itemListRestaurantPicture);
         } else {
-            holder.binding.itemListRestaurantPicture.setImageResource(R.drawable.picture_restaurant_with_workers);
+            holder.binding.itemListRestaurantPicture.setImageResource(R.drawable.image_restaurant);
         }
 
         // Set Distance
