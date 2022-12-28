@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Go4LunchAppOC</string>
+    <string name="app_name_toolbar">I\'m Hungry!</string>
 </resources>
