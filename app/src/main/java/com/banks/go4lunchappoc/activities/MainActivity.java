@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.fragment.ListRestaurantsFragment;
 import com.banks.go4lunchappoc.fragment.MapFragment;
 import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        if(!Places.isInitialized()){
+            Places.initialize(getApplicationContext(), BuildConfig.RR_KEY);
+        }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mMapFragment)

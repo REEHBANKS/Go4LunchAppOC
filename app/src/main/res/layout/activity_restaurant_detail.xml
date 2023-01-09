@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/picture_restaurant_detail"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/picture_restaurant_with_workers" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_favorite_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="330dp"
+        android:layout_marginTop="240dp"
+        android:src="@drawable/ic_check_floating"
+        app:backgroundTint="#FFFFFF" />
+
+
+    <LinearLayout
+        android:id="@+id/linear_layout_container_1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/picture_restaurant_detail"
+        android:background="@color/app_color"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/name_restaurant_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Le Zinc"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <RatingBar
+                android:id="@+id/item_list_restaurant_rating_bar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_toEndOf="@+id/name_restaurant_detail"
+                android:numStars="3"
+                android:progressTint="@color/gold" />
+
+            <TextView
+                android:id="@+id/address_restaurant_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_restaurant_detail"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:text="5 avenue des renards"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_container_2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/linear_layout_container_1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/button_call_restaurant_detail"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="50dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_phone_24" />
+
+            <ImageButton
+                android:id="@+id/button_like_restaurant_detail"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="170dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_like_star_24" />
+
+            <ImageButton
+                android:id="@+id/button_website_restaurant_detail"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="290dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_website2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="47dp"
+                android:text="CALL"
+                android:textColor="@color/app_color"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="295dp"
+                android:layout_marginTop="47dp"
+                android:text="WEBSITE"
+                android:textColor="@color/app_color"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="190dp"
+                android:layout_marginTop="47dp"
+                android:text="LIKE"
+                android:textColor="@color/app_color"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/linear_layout_container_2" />
+
+</RelativeLayout>

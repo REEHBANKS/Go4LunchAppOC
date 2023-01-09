@@ -1,9 +1,11 @@
 package com.banks.go4lunchappoc.view;
 
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.FragmentListItemBinding;
+import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
 import com.banks.go4lunchappoc.model.restaurant.Restaurant;
 import com.bumptech.glide.Glide;
 
@@ -81,13 +84,14 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
             holder.binding.itemListRestaurantOpening.setText(String.valueOf(" "));
         }
 
-      /*  holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new ClickListRestaurantEvent(restaurant));
+                Log.d("mat", "On complete");
             }
         });
-    */}
+    }
 
     @Override
     public int getItemCount() {

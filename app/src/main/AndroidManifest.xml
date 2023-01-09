@@ -12,6 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Go4LunchAppOC">
+        <activity
+            android:name=".activities.RestaurantDetailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_restaurant_detail"
+            android:theme="@style/Theme.Go4LunchAppOC.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

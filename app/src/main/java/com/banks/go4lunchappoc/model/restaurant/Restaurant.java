@@ -13,6 +13,8 @@ public class Restaurant implements Serializable {
     private Boolean openingHours;
     private Float rating;
     private int distanceKm;
+    private String numberPhone;
+    private String email;
 
     public Restaurant(String id, String restaurantName, Double latitude, Double longitude,
                       String urlPictureRestaurant, String restaurantAddress, Boolean openingHours,
@@ -28,6 +30,20 @@ public class Restaurant implements Serializable {
         this.distanceKm = distanceKm;
     }
 
+    public Restaurant(String id, String restaurantName, Double latitude, Double longitude, String urlPictureRestaurant, String restaurantAddress, Boolean openingHours, Float rating, int distanceKm, String numberPhone, String email) {
+        this.id = id;
+        this.restaurantName = restaurantName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.urlPictureRestaurant = urlPictureRestaurant;
+        this.restaurantAddress = restaurantAddress;
+        this.openingHours = openingHours;
+        this.rating = rating;
+        this.distanceKm = distanceKm;
+        this.numberPhone = numberPhone;
+        this.email = email;
+    }
+
     // --- GETTERS ---
     public String getId() {
         return id;
@@ -37,18 +53,10 @@ public class Restaurant implements Serializable {
         return urlPictureRestaurant;
     }
 
-    public void setUrlPictureRestaurant(String urlPictureRestaurant) {
-        this.urlPictureRestaurant = urlPictureRestaurant;
-    }
-
-    // --- GETTERS ---
     public int getDistanceKm() {
         return distanceKm;
     }
 
-    public void setDistanceKm(int distanceKm) {
-        this.distanceKm = distanceKm;
-    }
 
     public String getRestaurantName() {
         return restaurantName;
@@ -72,6 +80,14 @@ public class Restaurant implements Serializable {
 
     public Float getRating() {
         return rating;
+    }
+
+    public String getNumberPhone() {
+        return numberPhone;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
 
@@ -103,4 +119,14 @@ public class Restaurant implements Serializable {
     public void setRating(Float rating) {
         this.rating = rating;
     }
+
+    public void setDistanceKm(int distanceKm) {
+        this.distanceKm = distanceKm;
+    }
+
+    public void setUrlPictureRestaurant(String urlPictureRestaurant) {
+        this.urlPictureRestaurant = urlPictureRestaurant;
+    }
+
+
 }

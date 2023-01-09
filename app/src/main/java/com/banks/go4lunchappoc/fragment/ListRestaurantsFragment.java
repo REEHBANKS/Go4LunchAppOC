@@ -20,7 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.banks.go4lunchappoc.activities.RestaurantDetailActivity;
 import com.banks.go4lunchappoc.databinding.FragmentListRestaurantBinding;
+import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.model.restaurant.Restaurant;
 import com.banks.go4lunchappoc.view.RestaurantsAdapter;
@@ -98,6 +100,35 @@ public class ListRestaurantsFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    // -------------------
+    // EventBus
+    // -------------------
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onClickListRestaurant(ClickListRestaurantEvent event){
+        launchRestaurantDetailActivity(event.restaurant);
+    }
+
+    // -------------------
+    // Method Launching restaurant detail activity with a element restaurant
+    // -------------------
+
+    private void launchRestaurantDetailActivity(Restaurant restaurant){
+        Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+        intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY,restaurant);
+        startActivity(intent);
+    }
 
 
 
