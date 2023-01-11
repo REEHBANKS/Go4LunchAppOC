@@ -15,8 +15,10 @@ import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.FragmentListItemBinding;
 import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
+import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.model.restaurant.Restaurant;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,6 +27,7 @@ import java.util.List;
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHolder> {
 
     private final List<Restaurant> restaurants;
+    ListRestaurantViewModel mMainViewModel = new ListRestaurantViewModel();
 
 
     public RestaurantsAdapter(List<Restaurant> restaurants) {
@@ -87,8 +90,9 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LatLng latLng = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
+                mMainViewModel.fetchOneRestaurantViewModel(latLng,restaurant.getId(),restaurant.getRating());
                 EventBus.getDefault().post(new ClickListRestaurantEvent(restaurant));
-                Log.d("mat", "On complete");
             }
         });
     }

@@ -62,6 +62,8 @@ public class ListRestaurantsFragment extends Fragment {
         this.configureRecyclerView();
         checkAccessRestaurant();
         observeRestaurantLiveData();
+        observeOneRestaurantForTheSearchLiveData();
+        observeOneRestaurantLiveData();
 
         return binding.getRoot();
 
@@ -82,6 +84,30 @@ public class ListRestaurantsFragment extends Fragment {
         });
     }
 
+    // Get Current One Restaurant for the search function
+
+    public void observeOneRestaurantForTheSearchLiveData() {
+        mMainViewModel.getOneRestaurantForTheSearchLiveData().observe(getViewLifecycleOwner(), new Observer<Restaurant>() {
+            @Override
+            public void onChanged(Restaurant restaurant) {
+                updateRestaurantSearch(restaurant);
+
+            }
+        });
+    }
+
+    // Get Current One Restaurant for the search function
+
+    public void observeOneRestaurantLiveData() {
+        mMainViewModel.getOneRestaurantLiveData().observe(getViewLifecycleOwner(), new Observer<Restaurant>() {
+            @Override
+            public void onChanged(Restaurant restaurant) {
+                EventBus.getDefault().post(new ClickListRestaurantEvent(restaurant));
+
+            }
+        });
+    }
+
     // -----------------
     // CONFIGURATION RECYCLERVIEW
     // -----------------
@@ -98,6 +124,14 @@ public class ListRestaurantsFragment extends Fragment {
     public void updateUI(List<Restaurant> theRestaurants) {
         restaurants.addAll(theRestaurants);
         adapter.notifyDataSetChanged();
+    }
+
+    public void updateRestaurantSearch(Restaurant theRestaurant)  {
+        restaurants.clear();
+        restaurants.add(theRestaurant);
+        adapter.notifyDataSetChanged();
+
+
     }
 
     // -------------------

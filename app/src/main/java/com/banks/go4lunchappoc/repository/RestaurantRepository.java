@@ -13,6 +13,7 @@ import com.banks.go4lunchappoc.model.jsonResponse.AllRestaurantsResponse;
 import com.banks.go4lunchappoc.model.jsonResponse.RestaurantResponse;
 import com.banks.go4lunchappoc.model.restaurant.Restaurant;
 import com.banks.go4lunchappoc.BuildConfig;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,23 @@ public class RestaurantRepository {
 
     public LiveData<List<Restaurant>> getRestaurantLiveData() {
         return result;
+    }
+
+    MutableLiveData<Restaurant> oneResult = new MutableLiveData<>();
+
+    public LiveData<Restaurant> getOneRestaurantLiveData() {
+        return oneResult;
+    }
+
+    private static RestaurantRepository restaurantRepository;
+
+    // Singleton of repository
+    public static RestaurantRepository getInstance(){
+        if(restaurantRepository == null){
+            restaurantRepository = new RestaurantRepository();
+        }
+        return restaurantRepository;
+
     }
 
 
@@ -107,5 +125,74 @@ public class RestaurantRepository {
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public void fetchOneRestaurant(LatLng latLng, String id, Float rating) {
+        streamFetchOneRestaurantResponse(latLng,id,rating)
+                .subscribeWith(new DisposableObserver<Restaurant>() {
+
+                    @Override
+                    public void onNext(@NonNull Restaurant restaurant) {
+                        oneResult.setValue(restaurant);
+
+
+
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d("MAMAN", "On error one rest");
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("JUSTIN", "On complete");
+
+                    }
+                });
+    }
+
+
+    public  Observable<Restaurant>  streamFetchOneRestaurantResponse(LatLng latLng,String id,Float rating) {
+
+
+
+        RestaurantService restaurantService = RetrofitClient.getRetrofit().create(RestaurantService.class);
+        return restaurantService.getOneRestaurantByIdResponse(BuildConfig.RR_KEY, id)
+                .map(resultOneResponse -> {
+
+
+                    Boolean isOpen = resultOneResponse.getResult().getOpeningResponse() != null ? resultOneResponse.getResult().getOpeningResponse().getOpen_now() : false;
+                    String photoIsHere = resultOneResponse.getResult().getPhotosResponse() == null ||  resultOneResponse.getResult().getPhotosResponse().isEmpty() ? null :
+                            resultOneResponse.getResult().getPhotosResponse().get(0).getPhotoReference();
+
+
+                         /*  float[] results = new float[1];
+                            Location.distanceBetween(latitude, longitude, restaurantResponse.getGeometryResponse().getLocationResponse().getLat()
+                                    ,restaurantResponse.getGeometryResponse().getLocationResponse().getLng(), results);
+                            float distanceResults = results[0];
+                            int distance = (int) distanceResults;
+*/
+
+                    return new Restaurant(resultOneResponse.getResult().getPlace_id(),
+                            resultOneResponse.getResult().getName(),
+                            resultOneResponse.getResult().getGeometryResponse().getLocationResponse().getLat(),
+                            resultOneResponse.getResult().getGeometryResponse().getLocationResponse().getLng(),
+                            photoIsHere,
+                            resultOneResponse.getResult().getVicinity(),
+                            isOpen,
+                            rating,
+                            0,
+                            resultOneResponse.getResult().getFormatted_phone_number(),
+                            resultOneResponse.getResult().getWebsite());
+
+
+                })
+
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
     }
 }

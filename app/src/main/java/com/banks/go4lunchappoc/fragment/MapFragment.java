@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.banks.go4lunchappoc.R;
+import com.banks.go4lunchappoc.activities.RestaurantDetailActivity;
 import com.banks.go4lunchappoc.injection.MapViewModel;
 import com.banks.go4lunchappoc.model.restaurant.Restaurant;
 import com.google.android.gms.location.LocationCallback;
@@ -58,6 +60,7 @@ public class MapFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         observeMapLiveData();
+        observeOneMapLiveData();
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
@@ -78,6 +81,19 @@ public class MapFragment extends Fragment {
     // Subscriber Live Data for set update the restaurants
     private void observeMapLiveData() {
         mapViewModel.getMapLiveData().observe(getViewLifecycleOwner(), this::updateUI);
+    }
+
+    // Get Current One Restaurant
+
+    public void observeOneMapLiveData() {
+        mapViewModel.getOneMapLiveData().observe(getViewLifecycleOwner(), new Observer<Restaurant>() {
+            @Override
+            public void onChanged(Restaurant restaurant) {
+
+                onMapReadyMarkerSearch(restaurant);
+
+            }
+        });
     }
 
     //Method for the update
@@ -215,10 +231,31 @@ public class MapFragment extends Fragment {
                 }, Looper.getMainLooper());
     }
 
+    // Method to add marker for search option restaurant
+    public void onMapReadyMarkerSearch (Restaurant restaurant ) {
+
+        LatLng latLng = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
+        Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
+                        .position((latLng))
+                        .title(restaurant.getRestaurantName())))
+                .setTag(restaurant);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng((latLng)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
 
 
+                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+                intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY,(Restaurant) marker.getTag());
+                startActivity(intent);
 
 
+                return true;
+            }
+        });
+    }
 
 
 }
