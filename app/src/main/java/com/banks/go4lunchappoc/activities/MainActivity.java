@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        startActivity(new Intent(MainActivity.this,ConnexionActivity.class));
+
 
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(), BuildConfig.RR_KEY);
