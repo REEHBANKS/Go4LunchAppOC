@@ -26,5 +26,13 @@
     <string name="error_no_internet">Not internet!</string>
     <string name="error_unknown_error">Unknown error!</string>
 
+    <string name="facebook_application_id">3430815187239798</string>
+    <string name="fb_login_protocol_scheme">fb3430815187239798</string>
+
+
+    <!-- to toggle the open close button of the navigation drawer -->
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
 
 </resources>

@@ -34,7 +34,7 @@ public class ConnexionActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
        setupEmailListeners();
         setupGoogleListeners();
-     //   setupFacebookListeners();
+        setupFacebookListeners();
 
     }
 
@@ -51,14 +51,14 @@ public class ConnexionActivity extends AppCompatActivity {
             startGoogleConnexionInActivity();
         });
     }
-/*
+
     private void setupFacebookListeners(){
         // FB Button
         binding.facebookButton.setOnClickListener(view -> {
             startFacebookConnexionInActivity();
         });
     }
-*/
+
 
     private void startEmailConnexionInActivity(){
 
@@ -98,7 +98,7 @@ public class ConnexionActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
-/*
+
     private void startFacebookConnexionInActivity(){
 
         // Choose authentication providers
@@ -119,7 +119,7 @@ public class ConnexionActivity extends AppCompatActivity {
     }
 
 
-*/
+
 
 
     @Override
