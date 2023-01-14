@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:gravity="bottom"
+    android:padding="16dp"
+    android:background="@drawable/picture_nav_header_censored">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="Go4Lunch"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="30dp"
+        android:textSize="40dp"
+        />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/picture_nav_header"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/mbappe_picture"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name_nav_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="Kyllian Mbappe"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                />
+
+            <TextView
+                android:id="@+id/mail_nav_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="km@gmail.com"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="10dp"
+                />
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+  */  </LinearLayout>
+
+</LinearLayout>
