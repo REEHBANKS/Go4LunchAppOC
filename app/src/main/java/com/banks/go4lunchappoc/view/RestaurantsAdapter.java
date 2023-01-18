@@ -1,11 +1,9 @@
 package com.banks.go4lunchappoc.view;
 
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -16,7 +14,7 @@ import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.FragmentListItemBinding;
 import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
-import com.banks.go4lunchappoc.model.restaurant.Restaurant;
+import com.banks.go4lunchappoc.model.Restaurant;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 

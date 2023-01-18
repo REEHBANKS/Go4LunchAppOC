@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.activities.RestaurantDetailActivity;
 import com.banks.go4lunchappoc.injection.MapViewModel;
-import com.banks.go4lunchappoc.model.restaurant.Restaurant;
+import com.banks.go4lunchappoc.model.Restaurant;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;

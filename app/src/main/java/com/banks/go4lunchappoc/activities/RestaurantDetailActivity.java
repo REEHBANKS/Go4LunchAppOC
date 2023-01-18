@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.ActivityRestaurantDetailBinding;
-import com.banks.go4lunchappoc.model.restaurant.Restaurant;
+import com.banks.go4lunchappoc.model.Restaurant;
 import com.bumptech.glide.Glide;
 
 public class RestaurantDetailActivity extends AppCompatActivity {

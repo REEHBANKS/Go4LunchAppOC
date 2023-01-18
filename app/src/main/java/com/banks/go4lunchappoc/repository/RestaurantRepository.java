@@ -11,7 +11,7 @@ import com.banks.go4lunchappoc.data.RestaurantService;
 import com.banks.go4lunchappoc.data.RetrofitClient;
 import com.banks.go4lunchappoc.model.jsonResponse.AllRestaurantsResponse;
 import com.banks.go4lunchappoc.model.jsonResponse.RestaurantResponse;
-import com.banks.go4lunchappoc.model.restaurant.Restaurant;
+import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.google.android.gms.maps.model.LatLng;
 

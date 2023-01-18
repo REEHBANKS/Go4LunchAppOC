@@ -24,7 +24,7 @@ import com.banks.go4lunchappoc.activities.RestaurantDetailActivity;
 import com.banks.go4lunchappoc.databinding.FragmentListRestaurantBinding;
 import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
-import com.banks.go4lunchappoc.model.restaurant.Restaurant;
+import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.view.RestaurantsAdapter;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;

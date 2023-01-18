@@ -142,8 +142,11 @@ public class ConnexionActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
-                // userManager.createUser();
                 showSnackBar(getString(R.string.connection_succeed));
+                startMainActivity();
+
+                // userManager.createUser();
+
             } else {
                 // ERRORS
                 if (response == null) {
@@ -157,6 +160,12 @@ public class ConnexionActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    // Launching Main Activity
+    private void startMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }

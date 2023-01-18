@@ -3,7 +3,7 @@ package com.banks.go4lunchappoc.injection;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.banks.go4lunchappoc.model.restaurant.Restaurant;
+import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.repository.RestaurantRepository;
 import com.google.android.gms.maps.model.LatLng;
 

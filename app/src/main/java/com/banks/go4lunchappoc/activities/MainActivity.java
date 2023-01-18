@@ -11,19 +11,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
+import com.banks.go4lunchappoc.databinding.ActivityMainBinding;
 import com.banks.go4lunchappoc.fragment.ListRestaurantsFragment;
 import com.banks.go4lunchappoc.fragment.MapFragment;
 import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.injection.MapViewModel;
+import com.banks.go4lunchappoc.manager.UserManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -32,6 +41,8 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
     MapViewModel mapViewModel = new MapViewModel();
     ListRestaurantViewModel mMainViewModel = new ListRestaurantViewModel();
     BottomNavigationView bottomNavigationView;
+    private final UserManager userManager = UserManager.getInstance();
+    NavigationView navigationView;
+    View headerView;
+    TextView navUserName;
+    TextView navUserMail;
+    ImageView navUserPicture;
 
     ListRestaurantsFragment mListRestaurantFragment = new ListRestaurantsFragment();
     MapFragment mMapFragment = new MapFragment();
@@ -60,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        updateNavHeader();
 
-       // startActivity(new Intent(MainActivity.this,ConnexionActivity.class));
+      // startActivity(new Intent(MainActivity.this,ConnexionActivity.class));
 
 
         if(!Places.isInitialized()){
@@ -112,6 +130,46 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
     }
+
+    public void updateNavHeader() {
+        if(userManager.isCurrentUserLogged()){
+            FirebaseUser user = userManager.getCurrentUser();
+
+            if(user.getPhotoUrl() != null){
+                setProfilePicture(user.getPhotoUrl());
+            }
+            setTextUserData(user);
+        }
+    }
+
+    private void setProfilePicture(Uri profilePictureUrl){
+          navigationView = (NavigationView) findViewById(R.id.drawer_navigation);
+          headerView = navigationView.getHeaderView(0);
+          navUserPicture= headerView.findViewById(R.id.picture_nav_header);
+
+        Glide.with(this)
+                .load(profilePictureUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .into(navUserPicture);
+    }
+
+    private void setTextUserData(FirebaseUser user){
+
+        navigationView = (NavigationView) findViewById(R.id.drawer_navigation);
+        headerView = navigationView.getHeaderView(0);
+        navUserName = headerView.findViewById(R.id.name_nav_header);
+         navUserMail = headerView.findViewById(R.id.mail_nav_header);
+
+        //Get email & username from User
+        String email = TextUtils.isEmpty(user.getEmail()) ? getString(R.string.info_no_email_found) : user.getEmail();
+        String username = TextUtils.isEmpty(user.getDisplayName()) ? getString(R.string.info_no_username_found) : user.getDisplayName();
+
+        //Update views with data
+        navUserName.setText(username);
+        navUserMail.setText(email);
+    }
+
+
 
 
 

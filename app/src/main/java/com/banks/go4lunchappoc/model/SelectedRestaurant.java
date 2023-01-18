@@ -1,4 +1,4 @@
-package com.banks.go4lunchappoc.model.restaurant;
+package com.banks.go4lunchappoc.model;
 
 import java.util.Date;
 

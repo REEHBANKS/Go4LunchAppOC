@@ -1,6 +1,6 @@
 package com.banks.go4lunchappoc.events;
 
-import com.banks.go4lunchappoc.model.restaurant.Restaurant;
+import com.banks.go4lunchappoc.model.Restaurant;
 
 public class ClickListRestaurantEvent {
 
