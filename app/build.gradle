@@ -1,17 +1,17 @@
 plugins {
     id 'com.android.application'
-    id 'com.google.secrets_gradle_plugin' version '0.4'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
 }
 
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.banks.go4lunchappoc"
         minSdk 21
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -33,6 +33,7 @@ android {
         viewBinding true
 
     }
+    namespace 'com.banks.go4lunchappoc'
 }
 
 dependencies {
@@ -50,6 +51,7 @@ dependencies {
     testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    implementation'androidx.work:work-runtime:2.7.1'
     // Glide library
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
@@ -84,6 +86,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
+    implementation "com.google.firebase:firebase-iid:21.1.0"
+    implementation 'com.firebaseui:firebase-ui-firestore:7.1.1'
+
 
     // FACEBOOK
     implementation 'com.facebook.android:facebook-android-sdk:5.13.0'

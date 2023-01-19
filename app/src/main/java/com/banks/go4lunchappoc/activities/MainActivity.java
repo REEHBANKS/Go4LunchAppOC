@@ -31,9 +31,14 @@ import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.injection.MapViewModel;
 import com.banks.go4lunchappoc.manager.UserManager;
+import com.banks.go4lunchappoc.model.User;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -43,9 +48,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         updateNavHeader();
+        getAllUser();
+
 
       // startActivity(new Intent(MainActivity.this,ConnexionActivity.class));
 
@@ -139,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 setProfilePicture(user.getPhotoUrl());
             }
             setTextUserData(user);
+            getUserData();
         }
     }
 
@@ -169,9 +181,37 @@ public class MainActivity extends AppCompatActivity {
         navUserMail.setText(email);
     }
 
+    private void getUserData(){
+        userManager.getUserData().addOnSuccessListener(user -> {
+            // Set the data with the user information
+            String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
+            navUserName.setText(username);
+
+         //   String email = TextUtils.isEmpty(user.getUserMail()) ? getString(R.string.info_no_username_found) : user.getUserMail();
+        //    navUserMail.setText(email);
+        });
+    }
 
 
-
+    private void getAllUser(){
+        userManager.getAllUsers()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<User> userList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                User user = document.toObject(User.class);
+                                userList.add(user);
+                            }
+                            for (User user : userList) {
+                                Log.d("GOD", "User name: " + user.getUsername());
+                                Log.d("GOD", "User email: " + user.getUserMail());
+                            }
+                        }
+                    }
+                });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.ActivityConnexionBinding;
+import com.banks.go4lunchappoc.manager.UserManager;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -26,6 +27,7 @@ public class ConnexionActivity extends AppCompatActivity {
 
     private ActivityConnexionBinding binding;
     private static final int RC_SIGN_IN = 123;
+    private final UserManager userManager = UserManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,10 +144,9 @@ public class ConnexionActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
+                userManager.createUser();
                 showSnackBar(getString(R.string.connection_succeed));
                 startMainActivity();
-
-                // userManager.createUser();
 
             } else {
                 // ERRORS
