@@ -87,10 +87,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         updateNavHeader();
-        getAllUser();
 
-
-      // startActivity(new Intent(MainActivity.this,ConnexionActivity.class));
 
 
         if(!Places.isInitialized()){
@@ -193,25 +190,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void getAllUser(){
-        userManager.getAllUsers()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<User> userList = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                User user = document.toObject(User.class);
-                                userList.add(user);
-                            }
-                            for (User user : userList) {
-                                Log.d("GOD", "User name: " + user.getUsername());
-                                Log.d("GOD", "User email: " + user.getUserMail());
-                            }
-                        }
-                    }
-                });
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

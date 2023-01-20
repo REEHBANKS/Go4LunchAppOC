@@ -88,12 +88,6 @@ public class UserRepository {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-  /*  public Task <> getAllUserData(){
-        return getUsersCollection();
-
-
-    }
-*/
 
     public Task<QuerySnapshot> getAllUserData(){
         return getUsersCollection().get();
