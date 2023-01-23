@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 assert data != null;
                 Place place = Autocomplete.getPlaceFromIntent(data);
-                // mMapFragment.onMapReadyMarkerSearch(place.getLatLng(), place.getName());
+
                 mapViewModel.fetchOneMapViewModel(place.getLatLng(),place.getId(), Objects.requireNonNull(place.getRating()).floatValue());
 
 

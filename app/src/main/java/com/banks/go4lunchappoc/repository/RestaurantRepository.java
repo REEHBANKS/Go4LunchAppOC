@@ -9,17 +9,21 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.banks.go4lunchappoc.data.RestaurantService;
 import com.banks.go4lunchappoc.data.RetrofitClient;
+import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
 import com.banks.go4lunchappoc.model.jsonResponse.AllRestaurantsResponse;
 import com.banks.go4lunchappoc.model.jsonResponse.RestaurantResponse;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -128,14 +132,12 @@ public class RestaurantRepository {
     }
 
     public void fetchOneRestaurant(LatLng latLng, String id, Float rating) {
-        streamFetchOneRestaurantResponse(latLng,id,rating)
+         streamFetchOneRestaurantResponse(latLng,id,rating)
                 .subscribeWith(new DisposableObserver<Restaurant>() {
 
                     @Override
                     public void onNext(@NonNull Restaurant restaurant) {
                         oneResult.setValue(restaurant);
-
-
 
 
                     }

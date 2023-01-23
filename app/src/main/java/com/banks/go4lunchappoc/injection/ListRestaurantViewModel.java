@@ -30,7 +30,7 @@ public class ListRestaurantViewModel extends ViewModel {
     }
 
     public void fetchOneRestaurantForTheSearchViewModel(LatLng latLng, String id, Float rating){
-        restaurantRepository.fetchOneRestaurant(latLng,id,rating);
+       restaurantRepository.fetchOneRestaurant(latLng,id,rating);
     }
 
     public void fetchOneRestaurantViewModel(LatLng latLng, String id, Float rating){

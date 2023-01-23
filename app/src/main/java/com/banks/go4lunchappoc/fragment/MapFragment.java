@@ -126,7 +126,25 @@ public class MapFragment extends Fragment {
                         .setTag(restaurant);
 
             }
+/*
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(@NonNull Marker marker) {
+
+
+                    Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+                    intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY,(Restaurant) marker.getTag());
+                    startActivity(intent);
+
+
+                    return true;
+                }
+            });
+            */
+
         }
+
+
     }
 
     // Method to change icon marker on the google map
@@ -247,13 +265,17 @@ public class MapFragment extends Fragment {
             public boolean onMarkerClick(@NonNull Marker marker) {
 
 
-                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+              /*  Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
                 intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY,(Restaurant) marker.getTag());
                 startActivity(intent);
+*/
+
+               return true;
 
 
-                return true;
             }
+
+
         });
     }
 

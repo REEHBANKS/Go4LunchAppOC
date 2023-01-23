@@ -2,6 +2,7 @@ package com.banks.go4lunchappoc.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -54,6 +55,7 @@ public class ListRestaurantsFragment extends Fragment {
 
 
 
+
     @SuppressLint("RestrictedApi")
     @Nullable
     @Override
@@ -63,7 +65,8 @@ public class ListRestaurantsFragment extends Fragment {
         checkAccessRestaurant();
         observeRestaurantLiveData();
         observeOneRestaurantForTheSearchLiveData();
-        observeOneRestaurantLiveData();
+
+
 
         return binding.getRoot();
 
@@ -73,13 +76,10 @@ public class ListRestaurantsFragment extends Fragment {
     // Get Current List Restaurant
 
     public void observeRestaurantLiveData() {
-        // mMainViewModel.getRestaurantLiveData().observe(getViewLifecycleOwner(), this::updateUI);
         mMainViewModel.getRestaurantLiveData().observe(getViewLifecycleOwner(), new Observer<List<Restaurant>>() {
             @Override
             public void onChanged(List<Restaurant> restaurants) {
-
                 updateUI(restaurants);
-                Log.d("MATHIEU", String.valueOf(restaurants.size()));
             }
         });
     }
@@ -90,23 +90,14 @@ public class ListRestaurantsFragment extends Fragment {
         mMainViewModel.getOneRestaurantForTheSearchLiveData().observe(getViewLifecycleOwner(), new Observer<Restaurant>() {
             @Override
             public void onChanged(Restaurant restaurant) {
-                updateRestaurantSearch(restaurant);
 
+                    updateRestaurantSearch(restaurant);
             }
         });
     }
 
-    // Get Current One Restaurant for the search function
 
-    public void observeOneRestaurantLiveData() {
-        mMainViewModel.getOneRestaurantLiveData().observe(getViewLifecycleOwner(), new Observer<Restaurant>() {
-            @Override
-            public void onChanged(Restaurant restaurant) {
-                EventBus.getDefault().post(new ClickListRestaurantEvent(restaurant));
 
-            }
-        });
-    }
 
     // -----------------
     // CONFIGURATION RECYCLERVIEW

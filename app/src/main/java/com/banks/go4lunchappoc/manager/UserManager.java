@@ -20,7 +20,7 @@ import java.util.List;
 public class UserManager {
 
     private static volatile UserManager instance;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private UserManager() {
         userRepository = UserRepository.getInstance();

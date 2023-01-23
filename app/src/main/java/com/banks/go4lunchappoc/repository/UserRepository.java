@@ -25,7 +25,7 @@ public class UserRepository {
 
     private static volatile UserRepository instance;
     private static final String COLLECTION_NAME = "users";
-    private static final String USERNAME_FIELD = "username";
+
 
     private UserRepository() { }
 
@@ -76,13 +76,17 @@ public class UserRepository {
         }
     }
 
-
+    //-----------
+    // Get the Id of the user currently logged in
+    //----------
     @Nullable
     public String getCurrentUserUID(){
         FirebaseUser user = getCurrentUser();
         return (user != null)? user.getUid(): null;
     }
-
+    //-----------
+    // Get  the user currently logged in
+    //----------
     @Nullable
     public FirebaseUser getCurrentUser(){
         return FirebaseAuth.getInstance().getCurrentUser();

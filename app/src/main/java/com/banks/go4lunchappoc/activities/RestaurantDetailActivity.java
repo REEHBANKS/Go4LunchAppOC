@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.ActivityRestaurantDetailBinding;
+import com.banks.go4lunchappoc.manager.SelectedRestaurantManager;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.bumptech.glide.Glide;
 
@@ -17,6 +18,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     public static String RESTAURANT_KEY = "RESTAURANT_KEY";
     private Restaurant restaurant;
     private ActivityRestaurantDetailBinding binding;
+    private final SelectedRestaurantManager selectedRestaurantManager = SelectedRestaurantManager.getInstance();
+
 
 
     @Override
@@ -26,7 +29,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         restaurant = (Restaurant) getIntent().getSerializableExtra(RESTAURANT_KEY);
         updateUi();
+        fetchRestaurantId(restaurant.getId());
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public void updateUi() {
@@ -76,7 +85,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                     , "Unavailable website!", Toast.LENGTH_SHORT).show());
         }
 
-        binding.buttonSelectedRestaurant.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_SHORT).show());
+
+        binding.buttonSelectedRestaurant.setOnClickListener(v -> selectedRestaurantManager.createSelectedRestaurant());
+
+    }
+
+   public void fetchRestaurantId(String id){
+        selectedRestaurantManager.fetchRestaurantIdManager(id);
 
     }
 }
