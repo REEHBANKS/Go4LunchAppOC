@@ -9,7 +9,7 @@ public class UsersViewHolder extends RecyclerView.ViewHolder {
 
     FragmentWorkmatesItemBinding binding;
 
-    public UsersViewHolder( FragmentWorkmatesItemBinding itemView) {
+    public UsersViewHolder(FragmentWorkmatesItemBinding itemView) {
         super(itemView.getRoot());
         this.binding = itemView;
     }

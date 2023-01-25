@@ -39,8 +39,6 @@ public class WorkmatesFragment extends Fragment {
     private UsersAdapter adapter;
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +50,7 @@ public class WorkmatesFragment extends Fragment {
     }
 
 
-    private void getAllUser(){
+    private void getAllUser() {
         userManager.getAllUsers()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -87,8 +85,6 @@ public class WorkmatesFragment extends Fragment {
         users.addAll(theUsers);
         adapter.notifyDataSetChanged();
     }
-
-
 
 
 }

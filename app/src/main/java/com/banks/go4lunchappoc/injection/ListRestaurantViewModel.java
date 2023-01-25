@@ -13,27 +13,27 @@ public class ListRestaurantViewModel extends ViewModel {
 
     RestaurantRepository restaurantRepository = RestaurantRepository.getInstance();
 
-    public LiveData<List<Restaurant>> getRestaurantLiveData(){
+    public LiveData<List<Restaurant>> getRestaurantLiveData() {
         return restaurantRepository.getRestaurantLiveData();
     }
 
-    public LiveData<Restaurant> getOneRestaurantForTheSearchLiveData(){
+    public LiveData<Restaurant> getOneRestaurantForTheSearchLiveData() {
         return restaurantRepository.getOneRestaurantLiveData();
     }
 
-    public LiveData<Restaurant> getOneRestaurantLiveData(){
+    public LiveData<Restaurant> getOneRestaurantLiveData() {
         return restaurantRepository.getOneRestaurantLiveData();
     }
 
-    public void fetchAllRestaurantsViewModel(Double latitude, Double longitude){
-        restaurantRepository.fetchRestaurant(latitude,longitude);
+    public void fetchAllRestaurantsViewModel(Double latitude, Double longitude) {
+        restaurantRepository.fetchRestaurant(latitude, longitude);
     }
 
-    public void fetchOneRestaurantForTheSearchViewModel(LatLng latLng, String id, Float rating){
-       restaurantRepository.fetchOneRestaurant(latLng,id,rating);
+    public void fetchOneRestaurantForTheSearchViewModel(LatLng latLng, String id, Float rating) {
+        restaurantRepository.fetchOneRestaurant(latLng, id, rating);
     }
 
-    public void fetchOneRestaurantViewModel(LatLng latLng, String id, Float rating){
-        restaurantRepository.fetchOneRestaurant(latLng,id,rating);
+    public void fetchOneRestaurantViewModel(LatLng latLng, String id, Float rating) {
+        restaurantRepository.fetchOneRestaurant(latLng, id, rating);
     }
 }

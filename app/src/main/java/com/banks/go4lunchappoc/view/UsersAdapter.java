@@ -15,12 +15,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder>  {
+public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
 
     private final List<User> users;
 
 
-    public UsersAdapter (List<User> users){this.users = users;}
+    public UsersAdapter(List<User> users) {
+        this.users = users;
+    }
 
 
     @NonNull
@@ -51,7 +53,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder>  {
     public int getItemCount() {
         return users.size();
     }
-
 
 
 }

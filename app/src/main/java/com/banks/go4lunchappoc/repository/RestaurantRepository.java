@@ -45,8 +45,8 @@ public class RestaurantRepository {
     private static RestaurantRepository restaurantRepository;
 
     // Singleton of repository
-    public static RestaurantRepository getInstance(){
-        if(restaurantRepository == null){
+    public static RestaurantRepository getInstance() {
+        if (restaurantRepository == null) {
             restaurantRepository = new RestaurantRepository();
         }
         return restaurantRepository;
@@ -54,10 +54,8 @@ public class RestaurantRepository {
     }
 
 
-
-
     public void fetchRestaurant(Double latitude, Double longitude) {
-        streamFetchRestaurantResponse(latitude,longitude)
+        streamFetchRestaurantResponse(latitude, longitude)
                 .subscribeWith(new DisposableObserver<List<Restaurant>>() {
 
                     @Override
@@ -82,14 +80,11 @@ public class RestaurantRepository {
     }
 
 
-
     public Observable<List<Restaurant>> streamFetchRestaurantResponse(Double latitude, Double longitude) {
 
         String lat = Double.toString(latitude);
         String lng = Double.toString(longitude);
         String location = lat + "," + lng;
-
-
 
 
         RestaurantService restaurantService = RetrofitClient.getRetrofit().create(RestaurantService.class);
@@ -106,7 +101,7 @@ public class RestaurantRepository {
 
                         float[] results = new float[1];
                         Location.distanceBetween(latitude, longitude, restaurantResponse.getGeometryResponse().getLocationResponse().getLat()
-                                ,restaurantResponse.getGeometryResponse().getLocationResponse().getLng(), results);
+                                , restaurantResponse.getGeometryResponse().getLocationResponse().getLng(), results);
                         float distanceResults = results[0];
                         int distance = (int) distanceResults;
 
@@ -132,7 +127,7 @@ public class RestaurantRepository {
     }
 
     public void fetchOneRestaurant(LatLng latLng, String id, Float rating) {
-         streamFetchOneRestaurantResponse(latLng,id,rating)
+        streamFetchOneRestaurantResponse(latLng, id, rating)
                 .subscribeWith(new DisposableObserver<Restaurant>() {
 
                     @Override
@@ -157,8 +152,7 @@ public class RestaurantRepository {
     }
 
 
-    public  Observable<Restaurant>  streamFetchOneRestaurantResponse(LatLng latLng,String id,Float rating) {
-
+    public Observable<Restaurant> streamFetchOneRestaurantResponse(LatLng latLng, String id, Float rating) {
 
 
         RestaurantService restaurantService = RetrofitClient.getRetrofit().create(RestaurantService.class);
@@ -167,7 +161,7 @@ public class RestaurantRepository {
 
 
                     Boolean isOpen = resultOneResponse.getResult().getOpeningResponse() != null ? resultOneResponse.getResult().getOpeningResponse().getOpen_now() : false;
-                    String photoIsHere = resultOneResponse.getResult().getPhotosResponse() == null ||  resultOneResponse.getResult().getPhotosResponse().isEmpty() ? null :
+                    String photoIsHere = resultOneResponse.getResult().getPhotosResponse() == null || resultOneResponse.getResult().getPhotosResponse().isEmpty() ? null :
                             resultOneResponse.getResult().getPhotosResponse().get(0).getPhotoReference();
 
 

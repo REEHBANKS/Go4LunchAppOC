@@ -1,5 +1,7 @@
 package com.banks.go4lunchappoc.activities;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,6 +11,8 @@ import android.widget.Toast;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.ActivityRestaurantDetailBinding;
+import com.banks.go4lunchappoc.fragment.ListUserInRestaurantDetailFragment;
+import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
 import com.banks.go4lunchappoc.manager.SelectedRestaurantManager;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.bumptech.glide.Glide;
@@ -19,7 +23,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private Restaurant restaurant;
     private ActivityRestaurantDetailBinding binding;
     private final SelectedRestaurantManager selectedRestaurantManager = SelectedRestaurantManager.getInstance();
-
+    ListUserInRestaurantDetailFragment listUserInRestaurantDetailFragment = new ListUserInRestaurantDetailFragment();
 
 
     @Override
@@ -30,13 +34,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         restaurant = (Restaurant) getIntent().getSerializableExtra(RESTAURANT_KEY);
         updateUi();
         fetchRestaurantId(restaurant.getId());
+        getSupportFragmentManager().beginTransaction().add(R.id.containerDetail, listUserInRestaurantDetailFragment)
+                .commit();
 
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 
     public void updateUi() {
 
@@ -90,7 +92,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     }
 
-   public void fetchRestaurantId(String id){
+    public void fetchRestaurantId(String id) {
         selectedRestaurantManager.fetchRestaurantIdManager(id);
 
     }

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,9 @@ import android.widget.Toast;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.activities.RestaurantDetailActivity;
 import com.banks.go4lunchappoc.injection.MapViewModel;
+import com.banks.go4lunchappoc.manager.SelectedRestaurantManager;
 import com.banks.go4lunchappoc.model.Restaurant;
+import com.banks.go4lunchappoc.model.SelectedRestaurant;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -40,6 +43,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +59,8 @@ public class MapFragment extends Fragment {
     private GoogleMap mMap;
     MapViewModel mapViewModel = new MapViewModel();
     private final List<Restaurant> mapRestaurants = new ArrayList<>();
+    List<SelectedRestaurant> listAllSelectedRestaurants = new ArrayList<>();
+    private final SelectedRestaurantManager selectedRestaurantManager = SelectedRestaurantManager.getInstance();
 
 
     @Nullable
@@ -61,6 +70,8 @@ public class MapFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         observeMapLiveData();
         observeOneMapLiveData();
+        getAllSelectedRestaurantsData();
+
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
@@ -104,48 +115,69 @@ public class MapFragment extends Fragment {
         addRestaurantsMarkers();
     }
 
+    // -----------------
+    // GET THE ALL USER SELECTED A RESTAURANT
+    // -----------------
+    private void getAllSelectedRestaurantsData() {
+        selectedRestaurantManager.getAllSelectedRestaurantsData()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                SelectedRestaurant selectedRestaurant = document.toObject(SelectedRestaurant.class);
+                                listAllSelectedRestaurants.add(selectedRestaurant);
+                            }
+
+                        }
+                    }
+                });
+    }
+
+
     //Method to add restaurants with the markers
     public void addRestaurantsMarkers() {
         for (Restaurant restaurant : mapRestaurants) {
-
             LatLng testLocation = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
-            if (restaurant.getOpeningHours()) {
+            boolean isSelected = false;
+            for (SelectedRestaurant listAllSelectedRestaurant : listAllSelectedRestaurants) {
+                if (restaurant.getId().equals(listAllSelectedRestaurant.getRestaurantId())) {
+                    isSelected = true;
+                    break;
+                }
+            }
+
+            if (!isSelected) {
                 Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
-                        .position(testLocation)
-                        .icon(bitmapDescriptorFactory(getContext(), R.drawable.icon_green_lunch))
-                        .title(restaurant.getRestaurantName())))
+                                .position(testLocation)
+                                .icon(bitmapDescriptorFactory(getContext(), R.drawable.icon_red_lunch))
+                                .title(restaurant.getRestaurantName())))
                         .setTag(restaurant);
-
-
-
             } else {
                 Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
-                        .position(testLocation)
-                        .icon(bitmapDescriptorFactory(getContext(), R.drawable.icon_red_lunch))
-                        .title(restaurant.getRestaurantName())))
+                                .position(testLocation)
+                                .icon(bitmapDescriptorFactory(getContext(), R.drawable.icon_green_lunch))
+                                .title(restaurant.getRestaurantName())))
                         .setTag(restaurant);
-
             }
-/*
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(@NonNull Marker marker) {
-
-
-                    Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
-                    intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY,(Restaurant) marker.getTag());
-                    startActivity(intent);
-
-
-                    return true;
-                }
-            });
-            */
-
         }
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
 
+
+                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+                intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY, (Restaurant) marker.getTag());
+                startActivity(intent);
+
+
+                return true;
+            }
+        });
     }
+
 
     // Method to change icon marker on the google map
     private BitmapDescriptor bitmapDescriptorFactory(Context context, int vectorResId) {
@@ -157,10 +189,7 @@ public class MapFragment extends Fragment {
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-
-
     }
-
 
 
     // to Start the map
@@ -169,9 +198,6 @@ public class MapFragment extends Fragment {
         public void onMapReady(@NonNull GoogleMap googleMap) {
             mMap = googleMap;
             checkAccessRestaurant();
-
-
-
         }
     };
 
@@ -186,8 +212,6 @@ public class MapFragment extends Fragment {
         } else {
             getCurrentLocation();
             mMap.setMyLocationEnabled(true);
-
-
         }
     }
 
@@ -198,7 +222,6 @@ public class MapFragment extends Fragment {
         if (requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getCurrentLocation();
-
 
 
             } else {
@@ -243,14 +266,13 @@ public class MapFragment extends Fragment {
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 16));
 
-
                         }
                     }
                 }, Looper.getMainLooper());
     }
 
     // Method to add marker for search option restaurant
-    public void onMapReadyMarkerSearch (Restaurant restaurant ) {
+    public void onMapReadyMarkerSearch(Restaurant restaurant) {
 
         LatLng latLng = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
         Objects.requireNonNull(mMap.addMarker(new MarkerOptions()
@@ -263,21 +285,11 @@ public class MapFragment extends Fragment {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-
-
-              /*  Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
-                intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY,(Restaurant) marker.getTag());
+                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+                intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY, (Restaurant) marker.getTag());
                 startActivity(intent);
-*/
-
-               return true;
-
-
+                return true;
             }
-
-
         });
     }
-
-
 }

@@ -14,7 +14,7 @@ public interface RestaurantService {
 
     @GET("maps/api/place/nearbysearch/json?radius=1500&type=restaurant")
     Observable<AllRestaurantsResponse> getAllRestaurantsResponse(@Query("key") String api,
-                                                          @Query("location") String location);
+                                                                 @Query("location") String location);
 
     @GET("maps/api/place/details/json?")
     Observable<OneRestaurantResponse> getOneRestaurantByIdResponse(@Query("key") String api,

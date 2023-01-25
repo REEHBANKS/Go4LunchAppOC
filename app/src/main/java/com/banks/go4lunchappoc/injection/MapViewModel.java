@@ -10,24 +10,23 @@ import java.util.List;
 
 public class MapViewModel {
 
-    RestaurantRepository restaurantRepository =  RestaurantRepository.getInstance();
+    RestaurantRepository restaurantRepository = RestaurantRepository.getInstance();
 
 
-    public LiveData<List<Restaurant>> getMapLiveData(){
+    public LiveData<List<Restaurant>> getMapLiveData() {
         return restaurantRepository.getRestaurantLiveData();
     }
 
-    public LiveData<Restaurant> getOneMapLiveData(){
+    public LiveData<Restaurant> getOneMapLiveData() {
         return restaurantRepository.getOneRestaurantLiveData();
     }
 
-    public void fetchMapViewModel(Double latitude, Double longitude){
-        restaurantRepository.fetchRestaurant(latitude,longitude);
+    public void fetchMapViewModel(Double latitude, Double longitude) {
+        restaurantRepository.fetchRestaurant(latitude, longitude);
     }
 
-    public void fetchOneMapViewModel(LatLng latLng, String id, Float rating){
-        restaurantRepository.fetchOneRestaurant(latLng,id,rating);
+    public void fetchOneMapViewModel(LatLng latLng, String id, Float rating) {
+        restaurantRepository.fetchOneRestaurant(latLng, id, rating);
     }
-
 
 }

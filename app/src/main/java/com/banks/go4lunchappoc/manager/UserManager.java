@@ -57,12 +57,9 @@ public class UserManager {
     }
 
     public Task<QuerySnapshot> getAllUsers() {
-       return userRepository.getAllUserData();
+        return userRepository.getAllUserData();
 
     }
-
-
-
 
 
 }

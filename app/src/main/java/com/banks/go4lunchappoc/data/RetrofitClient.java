@@ -11,8 +11,8 @@ public class RetrofitClient {
 
     private static Retrofit retrofit;
 
-    public static Retrofit getRetrofit(){
-        if(retrofit != null){
+    public static Retrofit getRetrofit() {
+        if (retrofit != null) {
             return retrofit;
         }
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

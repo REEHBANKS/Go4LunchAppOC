@@ -25,7 +25,9 @@ import android.widget.Toast;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.ActivityMainBinding;
+import com.banks.go4lunchappoc.events.SearchEvent;
 import com.banks.go4lunchappoc.fragment.ListRestaurantsFragment;
+import com.banks.go4lunchappoc.fragment.ListUserInRestaurantDetailFragment;
 import com.banks.go4lunchappoc.fragment.MapFragment;
 import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
@@ -51,6 +53,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     ListRestaurantsFragment mListRestaurantFragment = new ListRestaurantsFragment();
     MapFragment mMapFragment = new MapFragment();
     static WorkmatesFragment mWorkmatesFragment = new WorkmatesFragment();
+
     Toolbar toolbar;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE_2 = 2;
@@ -84,20 +89,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar=findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         updateNavHeader();
 
 
-
-        if(!Places.isInitialized()){
+        if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), BuildConfig.RR_KEY);
         }
 
-   bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mMapFragment)
                 .commit();
-
 
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -105,15 +108,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.maps_view:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,mMapFragment )
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, mMapFragment)
                                 .commit();
                         return true;
                     case R.id.list_view:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,mListRestaurantFragment )
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, mListRestaurantFragment)
                                 .commit();
                         return true;
                     case R.id.workmates:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,mWorkmatesFragment )
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, mWorkmatesFragment)
                                 .commit();
                         return true;
                 }
@@ -140,10 +143,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateNavHeader() {
-        if(userManager.isCurrentUserLogged()){
+        if (userManager.isCurrentUserLogged()) {
             FirebaseUser user = userManager.getCurrentUser();
 
-            if(user.getPhotoUrl() != null){
+            if (user.getPhotoUrl() != null) {
                 setProfilePicture(user.getPhotoUrl());
             }
             setTextUserData(user);
@@ -151,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setProfilePicture(Uri profilePictureUrl){
-          navigationView = (NavigationView) findViewById(R.id.drawer_navigation);
-          headerView = navigationView.getHeaderView(0);
-          navUserPicture= headerView.findViewById(R.id.picture_nav_header);
+    private void setProfilePicture(Uri profilePictureUrl) {
+        navigationView = (NavigationView) findViewById(R.id.drawer_navigation);
+        headerView = navigationView.getHeaderView(0);
+        navUserPicture = headerView.findViewById(R.id.picture_nav_header);
 
         Glide.with(this)
                 .load(profilePictureUrl)
@@ -162,12 +165,12 @@ public class MainActivity extends AppCompatActivity {
                 .into(navUserPicture);
     }
 
-    private void setTextUserData(FirebaseUser user){
+    private void setTextUserData(FirebaseUser user) {
 
         navigationView = (NavigationView) findViewById(R.id.drawer_navigation);
         headerView = navigationView.getHeaderView(0);
         navUserName = headerView.findViewById(R.id.name_nav_header);
-         navUserMail = headerView.findViewById(R.id.mail_nav_header);
+        navUserMail = headerView.findViewById(R.id.mail_nav_header);
 
         //Get email & username from User
         String email = TextUtils.isEmpty(user.getEmail()) ? getString(R.string.info_no_email_found) : user.getEmail();
@@ -178,18 +181,16 @@ public class MainActivity extends AppCompatActivity {
         navUserMail.setText(email);
     }
 
-    private void getUserData(){
+    private void getUserData() {
         userManager.getUserData().addOnSuccessListener(user -> {
             // Set the data with the user information
             String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
             navUserName.setText(username);
 
-         //   String email = TextUtils.isEmpty(user.getUserMail()) ? getString(R.string.info_no_username_found) : user.getUserMail();
-        //    navUserMail.setText(email);
+            //   String email = TextUtils.isEmpty(user.getUserMail()) ? getString(R.string.info_no_username_found) : user.getUserMail();
+            //    navUserMail.setText(email);
         });
     }
-
-
 
 
     @Override
@@ -209,8 +210,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        switch (item.getItemId()){
-
+        switch (item.getItemId()) {
 
 
             case R.id.action_search:
@@ -221,20 +221,19 @@ public class MainActivity extends AppCompatActivity {
                             .setTypesFilter(Collections.singletonList("restaurant"))
                             .setCountry("FR")
                             .build(this);
-                    startActivityForResult  ( intent,AUTOCOMPLETE_REQUEST_CODE);
+                    startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
 
-                }else
-                if (mListRestaurantFragment.isVisible()) {
+                } else if (mListRestaurantFragment.isVisible()) {
                     Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,
                             Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS, Place.Field.ICON_URL, Place.Field.OPENING_HOURS,
                                     Place.Field.RATING))
                             .setTypesFilter(Collections.singletonList("restaurant"))
                             .setCountry("FR")
                             .build(this);
-                    startActivityForResult  ( intent,AUTOCOMPLETE_REQUEST_CODE_2);
+                    startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE_2);
+                    EventBus.getDefault().post(new SearchEvent());
 
-                }else
-                if(mWorkmatesFragment.isVisible()){
+                } else if (mWorkmatesFragment.isVisible()) {
                     Toast.makeText(this, "NOT AVAILABLE", Toast.LENGTH_SHORT).show();
                     break;
 
@@ -247,14 +246,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Search for map
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 assert data != null;
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
-                mapViewModel.fetchOneMapViewModel(place.getLatLng(),place.getId(), Objects.requireNonNull(place.getRating()).floatValue());
+                mapViewModel.fetchOneMapViewModel(place.getLatLng(), place.getId(), Objects.requireNonNull(place.getRating()).floatValue());
 
 
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
@@ -268,12 +267,12 @@ public class MainActivity extends AppCompatActivity {
             }
             return;
             // Search for list
-        } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE_2){
+        } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE_2) {
             if (resultCode == RESULT_OK) {
                 assert data != null;
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
-                mMainViewModel.fetchOneRestaurantForTheSearchViewModel(place.getLatLng(),place.getId(), Objects.requireNonNull(place.getRating()).floatValue());
+                mMainViewModel.fetchOneRestaurantForTheSearchViewModel(place.getLatLng(), place.getId(), Objects.requireNonNull(place.getRating()).floatValue());
 
 
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {

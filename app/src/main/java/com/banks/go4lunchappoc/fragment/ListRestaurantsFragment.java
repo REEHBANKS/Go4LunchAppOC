@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.banks.go4lunchappoc.activities.RestaurantDetailActivity;
 import com.banks.go4lunchappoc.databinding.FragmentListRestaurantBinding;
 import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
+import com.banks.go4lunchappoc.events.SearchEvent;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.view.RestaurantsAdapter;
@@ -42,6 +43,7 @@ public class ListRestaurantsFragment extends Fragment {
 
     ListRestaurantViewModel mMainViewModel = new ListRestaurantViewModel();
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
+    private boolean isSearchEventReceived = false;
 
 
     //DESIGN
@@ -50,11 +52,6 @@ public class ListRestaurantsFragment extends Fragment {
     //DATA
     private List<Restaurant> restaurants;
     private RestaurantsAdapter adapter;
-    private static final  String TAG = "Info";
-
-
-
-
 
     @SuppressLint("RestrictedApi")
     @Nullable
@@ -65,13 +62,8 @@ public class ListRestaurantsFragment extends Fragment {
         checkAccessRestaurant();
         observeRestaurantLiveData();
         observeOneRestaurantForTheSearchLiveData();
-
-
-
         return binding.getRoot();
-
     }
-
 
     // Get Current List Restaurant
 
@@ -90,13 +82,13 @@ public class ListRestaurantsFragment extends Fragment {
         mMainViewModel.getOneRestaurantForTheSearchLiveData().observe(getViewLifecycleOwner(), new Observer<Restaurant>() {
             @Override
             public void onChanged(Restaurant restaurant) {
-
+                if (isSearchEventReceived) {
                     updateRestaurantSearch(restaurant);
+                    isSearchEventReceived = false;
+                }
             }
         });
     }
-
-
 
 
     // -----------------
@@ -112,17 +104,17 @@ public class ListRestaurantsFragment extends Fragment {
     // -------------------
     // UPDATE UI
     // -------------------
+    @SuppressLint("NotifyDataSetChanged")
     public void updateUI(List<Restaurant> theRestaurants) {
         restaurants.addAll(theRestaurants);
         adapter.notifyDataSetChanged();
     }
 
-    public void updateRestaurantSearch(Restaurant theRestaurant)  {
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateRestaurantSearch(Restaurant theRestaurant) {
         restaurants.clear();
         restaurants.add(theRestaurant);
         adapter.notifyDataSetChanged();
-
-
     }
 
     // -------------------
@@ -141,7 +133,12 @@ public class ListRestaurantsFragment extends Fragment {
     }
 
     @Subscribe
-    public void onClickListRestaurant(ClickListRestaurantEvent event){
+    public void onSearchEvent(SearchEvent event) {
+        isSearchEventReceived = true;
+    }
+
+    @Subscribe
+    public void onClickListRestaurant(ClickListRestaurantEvent event) {
         launchRestaurantDetailActivity(event.restaurant);
     }
 
@@ -149,12 +146,11 @@ public class ListRestaurantsFragment extends Fragment {
     // Method Launching restaurant detail activity with a element restaurant
     // -------------------
 
-    private void launchRestaurantDetailActivity(Restaurant restaurant){
+    private void launchRestaurantDetailActivity(Restaurant restaurant) {
         Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
-        intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY,restaurant);
+        intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY, restaurant);
         startActivity(intent);
     }
-
 
 
     // -------------------
@@ -171,7 +167,6 @@ public class ListRestaurantsFragment extends Fragment {
 
         }
     }
-
 
 
     @Override
@@ -212,8 +207,7 @@ public class ListRestaurantsFragment extends Fragment {
                                     locationResult.getLocations().get(latestLocationIndex).getLongitude();
 
 
-
-                            mMainViewModel.fetchAllRestaurantsViewModel(latitude,longitude);
+                            mMainViewModel.fetchAllRestaurantsViewModel(latitude, longitude);
                         }
                     }
                 }, Looper.getMainLooper());

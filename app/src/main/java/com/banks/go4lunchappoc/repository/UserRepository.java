@@ -27,14 +27,15 @@ public class UserRepository {
     private static final String COLLECTION_NAME = "users";
 
 
-    private UserRepository() { }
+    private UserRepository() {
+    }
 
     public static UserRepository getInstance() {
         UserRepository result = instance;
         if (result != null) {
             return result;
         }
-        synchronized(UserRepository.class) {
+        synchronized (UserRepository.class) {
             if (instance == null) {
                 instance = new UserRepository();
             }
@@ -43,14 +44,14 @@ public class UserRepository {
     }
 
     // Get the Collection Reference
-    private CollectionReference getUsersCollection(){
+    private CollectionReference getUsersCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     // Create User in Firestore
     public void createUser() {
         FirebaseUser user = getCurrentUser();
-        if(user != null){
+        if (user != null) {
             String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : null;
             String username = user.getDisplayName();
             String uid = user.getUid();
@@ -67,11 +68,11 @@ public class UserRepository {
     }
 
     // Get User Data from Firestore
-    public Task<DocumentSnapshot> getUserData(){
+    public Task<DocumentSnapshot> getUserData() {
         String uid = this.getCurrentUserUID();
-        if(uid != null){
+        if (uid != null) {
             return this.getUsersCollection().document(uid).get();
-        }else{
+        } else {
             return null;
         }
     }
@@ -80,20 +81,21 @@ public class UserRepository {
     // Get the Id of the user currently logged in
     //----------
     @Nullable
-    public String getCurrentUserUID(){
+    public String getCurrentUserUID() {
         FirebaseUser user = getCurrentUser();
-        return (user != null)? user.getUid(): null;
+        return (user != null) ? user.getUid() : null;
     }
+
     //-----------
     // Get  the user currently logged in
     //----------
     @Nullable
-    public FirebaseUser getCurrentUser(){
+    public FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
 
-    public Task<QuerySnapshot> getAllUserData(){
+    public Task<QuerySnapshot> getAllUserData() {
         return getUsersCollection().get();
 
     }

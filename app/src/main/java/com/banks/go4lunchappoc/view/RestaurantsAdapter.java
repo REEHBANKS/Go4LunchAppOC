@@ -55,7 +55,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
 
         // Set Rating
         if (restaurant.getRating() != null) {
-            float resultForThreeStars = 3 * restaurant.getRating()/5;
+            float resultForThreeStars = 3 * restaurant.getRating() / 5;
             holder.binding.itemListRestaurantRatingBar.setRating(resultForThreeStars);
         } else {
             try {
@@ -69,7 +69,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
         if (restaurant.getUrlPictureRestaurant() != null) {
             Glide.with(holder.binding.itemListRestaurantPicture.getContext())
                     .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference="
-                            + restaurant.getUrlPictureRestaurant() +"&key="+ BuildConfig.RR_KEY)
+                            + restaurant.getUrlPictureRestaurant() + "&key=" + BuildConfig.RR_KEY)
                     .into(holder.binding.itemListRestaurantPicture);
         } else {
             holder.binding.itemListRestaurantPicture.setImageResource(R.drawable.image_restaurant);
@@ -89,7 +89,7 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
             @Override
             public void onClick(View v) {
                 LatLng latLng = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
-                mMainViewModel.fetchOneRestaurantViewModel(latLng,restaurant.getId(),restaurant.getRating());
+                mMainViewModel.fetchOneRestaurantViewModel(latLng, restaurant.getId(), restaurant.getRating());
                 EventBus.getDefault().post(new ClickListRestaurantEvent(restaurant));
             }
         });
@@ -110,7 +110,6 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
         }
         return statusRestaurant;
     }
-
 
 
 }
