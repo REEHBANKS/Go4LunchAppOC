@@ -11,6 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.net.PortUnreachableException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SelectedRestaurantRepository {
 
@@ -73,11 +75,19 @@ public class SelectedRestaurantRepository {
         restaurantID = id;
     }
 
+    public Date dateToday() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
     // -----------------
     // GET THE ALL USER SELECTED A RESTAURANT
     // -----------------
     public Task<QuerySnapshot> getAllUserSelectedRestaurantWithIdData() {
-        return getSelectedRestaurantCollection().whereEqualTo("restaurantId", restaurantID).get();
+        return getSelectedRestaurantCollection().whereEqualTo("restaurantId", restaurantID).whereEqualTo("dateSelected", dateToday()).get();
     }
 
     // -----------------

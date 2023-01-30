@@ -9,20 +9,17 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-
-import android.os.Looper;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.activities.RestaurantDetailActivity;
@@ -43,10 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,14 +91,7 @@ public class MapFragment extends Fragment {
     // Get Current One Restaurant
 
     public void observeOneMapLiveData() {
-        mapViewModel.getOneMapLiveData().observe(getViewLifecycleOwner(), new Observer<Restaurant>() {
-            @Override
-            public void onChanged(Restaurant restaurant) {
-
-                onMapReadyMarkerSearch(restaurant);
-
-            }
-        });
+        mapViewModel.getOneMapLiveData().observe(getViewLifecycleOwner(), this::onMapReadyMarkerSearch);
     }
 
     //Method for the update
@@ -120,17 +107,14 @@ public class MapFragment extends Fragment {
     // -----------------
     private void getAllSelectedRestaurantsData() {
         selectedRestaurantManager.getAllSelectedRestaurantsData()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                SelectedRestaurant selectedRestaurant = document.toObject(SelectedRestaurant.class);
-                                listAllSelectedRestaurants.add(selectedRestaurant);
-                            }
-
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            SelectedRestaurant selectedRestaurant = document.toObject(SelectedRestaurant.class);
+                            listAllSelectedRestaurants.add(selectedRestaurant);
                         }
+
                     }
                 });
     }
@@ -163,18 +147,15 @@ public class MapFragment extends Fragment {
             }
         }
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
+        mMap.setOnMarkerClickListener(marker -> {
 
 
-                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
-                intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY, (Restaurant) marker.getTag());
-                startActivity(intent);
+            Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+            intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY, (Restaurant) marker.getTag());
+            startActivity(intent);
 
 
-                return true;
-            }
+            return true;
         });
     }
 
@@ -203,6 +184,7 @@ public class MapFragment extends Fragment {
 
 
     // Checking Permission location
+    @SuppressLint("MissingPermission")
     private void checkAccessRestaurant() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(),

@@ -1,26 +1,26 @@
 package com.banks.go4lunchappoc.view;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.banks.go4lunchappoc.BuildConfig;
 import com.banks.go4lunchappoc.R;
-import com.banks.go4lunchappoc.databinding.FragmentListItemBinding;
 import com.banks.go4lunchappoc.databinding.FragmentWorkmatesItemBinding;
 import com.banks.go4lunchappoc.model.User;
+import com.banks.go4lunchappoc.model.UserScreen;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
 
-    private final List<User> users;
+    private final List<UserScreen> users;
 
 
-    public UsersAdapter(List<User> users) {
+    public UsersAdapter(List<UserScreen> users) {
         this.users = users;
     }
 
@@ -33,19 +33,28 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersViewHolder> {
         return new UsersViewHolder(fragmentWorkmatesItemBinding);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
-        User user = users.get(position);
+        UserScreen userScreen = users.get(position);
 
-        holder.binding.itemAvailabilitySentence.setText(user.getUsername());
+        holder.binding.userNameFragmentWorkMates.setText(userScreen.getUsername());
 
-        if (user.getUrlPictureUser() != null) {
+        if (userScreen.getRestaurantName() != null) {
+            holder.binding.restaurantNameFragmentWorkMates.setText("is eating " + userScreen.getRestaurantName());
+        } else {
+            holder.binding.restaurantNameFragmentWorkMates.setText("hasn't decided yet");
+        }
+
+        if (userScreen.getUrlPictureUser() != null) {
             Glide.with(holder.binding.itemUserPicture.getContext())
-                    .load(user.getUrlPictureUser())
+                    .load(userScreen.getUrlPictureUser())
                     .into(holder.binding.itemUserPicture);
         } else {
             holder.binding.itemUserPicture.setImageResource(R.drawable.mbappe_picture);
         }
+
+
 
     }
 

@@ -71,6 +71,7 @@ public class ListRestaurantsFragment extends Fragment {
         mMainViewModel.getRestaurantLiveData().observe(getViewLifecycleOwner(), new Observer<List<Restaurant>>() {
             @Override
             public void onChanged(List<Restaurant> restaurants) {
+
                 updateUI(restaurants);
             }
         });

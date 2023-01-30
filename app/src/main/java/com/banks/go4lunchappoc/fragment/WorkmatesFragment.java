@@ -16,6 +16,8 @@ import com.banks.go4lunchappoc.databinding.FragmentWorkmatesBinding;
 import com.banks.go4lunchappoc.manager.UserManager;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.model.User;
+import com.banks.go4lunchappoc.model.UserScreen;
+import com.banks.go4lunchappoc.useCase.ShowRestaurantSelectedByUserUseCase;
 import com.banks.go4lunchappoc.view.RestaurantsAdapter;
 import com.banks.go4lunchappoc.view.UsersAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,8 +37,12 @@ public class WorkmatesFragment extends Fragment {
     private FragmentWorkmatesBinding binding;
 
     //DATA
-    private List<User> users;
+    private List<UserScreen> users;
     private UsersAdapter adapter;
+    ShowRestaurantSelectedByUserUseCase showRestaurantSelectedByUserUseCase = ShowRestaurantSelectedByUserUseCase.getInstance();
+    List<UserScreen> userScreenList = new ArrayList<>();
+
+
 
 
     @Override
@@ -44,29 +50,14 @@ public class WorkmatesFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentWorkmatesBinding.inflate(getLayoutInflater(), container, false);
         this.configureRecyclerView();
-        getAllUser();
+        showRestaurantSelectedByUserUseCase.observeRestaurants(this);
+        updateUI(userScreenList = showRestaurantSelectedByUserUseCase.sortUsersByID());
+
 
         return binding.getRoot();
     }
 
 
-    private void getAllUser() {
-        userManager.getAllUsers()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<User> userList = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                User user = document.toObject(User.class);
-                                userList.add(user);
-                            }
-
-                            updateUI(userList);
-                        }
-                    }
-                });
-    }
 
     // -----------------
     // CONFIGURATION RECYCLERVIEW
@@ -81,8 +72,9 @@ public class WorkmatesFragment extends Fragment {
     // -------------------
     // UPDATE UI
     // -------------------
-    public void updateUI(List<User> theUsers) {
-        users.addAll(theUsers);
+    public void updateUI(List<UserScreen> userScreenList) {
+        users.clear();
+        users.addAll(userScreenList);
         adapter.notifyDataSetChanged();
     }
 

@@ -16,6 +16,9 @@ public class Restaurant implements Serializable {
     private String numberPhone;
     private String email;
 
+    public Restaurant() {
+    }
+
     public Restaurant(String id, String restaurantName, Double latitude, Double longitude,
                       String urlPictureRestaurant, String restaurantAddress, Boolean openingHours,
                       Float rating, int distanceKm) {

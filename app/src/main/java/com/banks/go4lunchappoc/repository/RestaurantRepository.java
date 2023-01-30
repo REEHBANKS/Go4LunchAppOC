@@ -4,17 +4,25 @@ import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.banks.go4lunchappoc.data.RestaurantService;
 import com.banks.go4lunchappoc.data.RetrofitClient;
 import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
+import com.banks.go4lunchappoc.model.SelectedRestaurant;
 import com.banks.go4lunchappoc.model.jsonResponse.AllRestaurantsResponse;
 import com.banks.go4lunchappoc.model.jsonResponse.RestaurantResponse;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.BuildConfig;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,6 +51,8 @@ public class RestaurantRepository {
     }
 
     private static RestaurantRepository restaurantRepository;
+
+    private static final String ALL_RESTAURANTS_FIELD = "all_restaurants";
 
     // Singleton of repository
     public static RestaurantRepository getInstance() {
@@ -191,4 +201,39 @@ public class RestaurantRepository {
                 .observeOn(AndroidSchedulers.mainThread());
 
     }
+
+    // -----------------
+    // REQUEST ALL RESTAURANTS IN FIRESTORE DATABASE
+    // -----------------
+    private CollectionReference getAllRestaurantsInFirestore() {
+        return FirebaseFirestore.getInstance().collection(ALL_RESTAURANTS_FIELD);
+    }
+
+
+    //-----------
+    // Create Selected restaurant in Firestore
+    //----------
+    public void createAllRestaurantsInFirestore(Restaurant restaurant) {
+        if (restaurant != null) {
+            String id = restaurant.getId();
+            String restaurantName = restaurant.getRestaurantName();
+            Double latitude = restaurant.getLatitude();
+            Double longitude = restaurant.getLongitude();
+            String urlPictureRestaurant = restaurant.getUrlPictureRestaurant();
+            String restaurantAddress = restaurant.getRestaurantAddress();
+            Boolean openingHours = restaurant.getOpeningHours();
+            Float rating = restaurant.getRating();
+            int distanceKm = restaurant.getDistanceKm();
+
+            Restaurant restaurantToCreate = new Restaurant(id, restaurantName, latitude, longitude, urlPictureRestaurant, restaurantAddress, openingHours, rating, distanceKm);
+
+
+            this.getAllRestaurantsInFirestore().document(id).set(restaurantToCreate);
+
+        }
+
+    }
+
+
+
 }
