@@ -34,6 +34,7 @@ import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.injection.MapViewModel;
 import com.banks.go4lunchappoc.manager.UserManager;
 import com.banks.go4lunchappoc.model.User;
+import com.banks.go4lunchappoc.useCase.ShowRestaurantSelectedByUserUseCase;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.api.Status;
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         updateNavHeader();
+
 
 
         if (!Places.isInitialized()) {

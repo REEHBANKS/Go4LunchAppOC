@@ -4,9 +4,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.banks.go4lunchappoc.manager.UserManager;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.model.SelectedRestaurant;
 import com.banks.go4lunchappoc.model.User;
@@ -32,11 +33,16 @@ public class ShowRestaurantSelectedByUserUseCase {
     List<SelectedRestaurant> listAllSelectedRestaurants = new ArrayList<>();
     List<User> listAllUsers = new ArrayList<>();
     List<Restaurant> restaurantList = new ArrayList<>();
+    private final MutableLiveData<List<UserScreen>> selectedRestaurantsLiveData = new MutableLiveData<>();
+
+
 
     public ShowRestaurantSelectedByUserUseCase() {
         userRepository = UserRepository.getInstance();
         selectedRestaurantRepository = SelectedRestaurantRepository.getInstance();
+
     }
+
 
     public static ShowRestaurantSelectedByUserUseCase getInstance() {
         ShowRestaurantSelectedByUserUseCase result = instance;
@@ -105,7 +111,7 @@ public class ShowRestaurantSelectedByUserUseCase {
                 });
     }
 
-    public List<UserScreen> sortUsersByID() {
+    public void  sortUsersByID() {
         List<UserScreen> userScreenList = new ArrayList<>();
         for (User listAllUser : listAllUsers) {
             boolean userAdded = false;
@@ -129,8 +135,13 @@ public class ShowRestaurantSelectedByUserUseCase {
             }
         }
 
+        selectedRestaurantsLiveData.setValue(userScreenList);
 
-        return  userScreenList;
+
+    }
+
+    public LiveData<List<UserScreen>> getSelectedRestaurantsLiveData() {
+        return selectedRestaurantsLiveData;
     }
 }
 

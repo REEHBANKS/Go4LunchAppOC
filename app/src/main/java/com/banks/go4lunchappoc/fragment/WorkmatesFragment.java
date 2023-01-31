@@ -2,28 +2,20 @@ package com.banks.go4lunchappoc.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.banks.go4lunchappoc.R;
-import com.banks.go4lunchappoc.databinding.FragmentListRestaurantBinding;
 import com.banks.go4lunchappoc.databinding.FragmentWorkmatesBinding;
 import com.banks.go4lunchappoc.manager.UserManager;
 import com.banks.go4lunchappoc.model.Restaurant;
-import com.banks.go4lunchappoc.model.User;
 import com.banks.go4lunchappoc.model.UserScreen;
 import com.banks.go4lunchappoc.useCase.ShowRestaurantSelectedByUserUseCase;
-import com.banks.go4lunchappoc.view.RestaurantsAdapter;
 import com.banks.go4lunchappoc.view.UsersAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +23,14 @@ import java.util.List;
 
 public class WorkmatesFragment extends Fragment {
 
-    private final UserManager userManager = UserManager.getInstance();
-
     //DESIGN
     private FragmentWorkmatesBinding binding;
 
     //DATA
     private List<UserScreen> users;
     private UsersAdapter adapter;
-    ShowRestaurantSelectedByUserUseCase showRestaurantSelectedByUserUseCase = ShowRestaurantSelectedByUserUseCase.getInstance();
-    List<UserScreen> userScreenList = new ArrayList<>();
+;
+    private ShowRestaurantSelectedByUserUseCase showRestaurantSelectedByUserUseCase;
 
 
 
@@ -50,11 +40,21 @@ public class WorkmatesFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentWorkmatesBinding.inflate(getLayoutInflater(), container, false);
         this.configureRecyclerView();
+        showRestaurantSelectedByUserUseCase = new ShowRestaurantSelectedByUserUseCase();
         showRestaurantSelectedByUserUseCase.observeRestaurants(this);
-        updateUI(userScreenList = showRestaurantSelectedByUserUseCase.sortUsersByID());
+        observeUserScreenLiveData();
 
 
         return binding.getRoot();
+    }
+
+    public void observeUserScreenLiveData() {
+        showRestaurantSelectedByUserUseCase.getSelectedRestaurantsLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserScreen>>() {
+            @Override
+            public void onChanged(List<UserScreen> userScreenList) {
+                updateUI(userScreenList);
+            }
+        });
     }
 
 
@@ -73,10 +73,11 @@ public class WorkmatesFragment extends Fragment {
     // UPDATE UI
     // -------------------
     public void updateUI(List<UserScreen> userScreenList) {
-        users.clear();
         users.addAll(userScreenList);
         adapter.notifyDataSetChanged();
     }
+
+
 
 
 }
