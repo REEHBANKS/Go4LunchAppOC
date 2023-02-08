@@ -21,10 +21,14 @@ import com.banks.go4lunchappoc.model.User;
 import com.banks.go4lunchappoc.view.UsersInDetailAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -46,8 +50,14 @@ public class ListUserInRestaurantDetailFragment extends Fragment {
         binding = FragmentListUserInRestaurantDetailBinding.inflate(getLayoutInflater(), container, false);
         this.configureRecyclerView();
         getAllUser();
+
+
         return binding.getRoot();
     }
+
+
+
+
 
     // -----------------
     // GET THE USERS
@@ -82,13 +92,45 @@ public class ListUserInRestaurantDetailFragment extends Fragment {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 SelectedRestaurant selectedRestaurant = document.toObject(SelectedRestaurant.class);
-                                listAllSelectedRestaurants.add(selectedRestaurant);
+                                Date dateSelected = selectedRestaurant.getDateSelected();
+                                Date dateToday = Calendar.getInstance().getTime();
+                                if (sameDay(dateSelected,dateToday)){
+                                    listAllSelectedRestaurants.add(selectedRestaurant);
+                                    Log.d("SelectedRestaurant", "Information: " + selectedRestaurant.getRestaurantId());
+                                }
+
                             }
                         }
                         sortUsersByID();
                     }
                 });
     }
+
+    // -----------------
+    // Get the compare between two dates (only the day)
+    // -----------------
+    public Boolean sameDay(Date dateOne, Date dateTwo){
+        Calendar calendar1 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
+
+        calendar1.setTime(dateOne);
+        calendar2.setTime(dateTwo);
+
+        calendar1.set(Calendar.HOUR_OF_DAY, 0);
+        calendar1.set(Calendar.MINUTE, 0);
+        calendar1.set(Calendar.SECOND, 0);
+        calendar1.set(Calendar.MILLISECOND, 0);
+
+        calendar2.set(Calendar.HOUR_OF_DAY, 0);
+        calendar2.set(Calendar.MINUTE, 0);
+        calendar2.set(Calendar.SECOND, 0);
+        calendar2.set(Calendar.MILLISECOND, 0);
+
+        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+                calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
+                calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
+    }
+
 
 
     public void sortUsersByID() {

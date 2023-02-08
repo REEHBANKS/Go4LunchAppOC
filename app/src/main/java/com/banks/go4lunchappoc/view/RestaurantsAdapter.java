@@ -15,6 +15,7 @@ import com.banks.go4lunchappoc.databinding.FragmentListItemBinding;
 import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.model.Restaurant;
+import com.banks.go4lunchappoc.model.RestaurantScreen;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -24,11 +25,11 @@ import java.util.List;
 
 public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHolder> {
 
-    private final List<Restaurant> restaurants;
+    private final List<RestaurantScreen> restaurants;
     ListRestaurantViewModel mMainViewModel = new ListRestaurantViewModel();
 
 
-    public RestaurantsAdapter(List<Restaurant> restaurants) {
+    public RestaurantsAdapter(List<RestaurantScreen> restaurants) {
         this.restaurants = restaurants;
     }
 
@@ -44,18 +45,21 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(RestaurantsViewHolder holder, int position) {
-        Restaurant restaurant = restaurants.get(position);
+        RestaurantScreen restaurant = restaurants.get(position);
 
         // Set Name
 
-        holder.binding.itemListRestaurantName.setText(restaurant.getRestaurantName());
+        holder.binding.itemListRestaurantName.setText(restaurant.getRestaurant().getRestaurantName());
+
+        // Set Number User Selected Restaurant
+        holder.binding.itemListRestaurantPersonNumber.setText(String.valueOf("("+ restaurant.getNumberUser() + ")"));
 
         //Set Address
-        holder.binding.itemListRestaurantAddress.setText(restaurant.getRestaurantAddress());
+        holder.binding.itemListRestaurantAddress.setText(restaurant.getRestaurant().getRestaurantAddress());
 
         // Set Rating
-        if (restaurant.getRating() != null) {
-            float resultForThreeStars = 3 * restaurant.getRating() / 5;
+        if (restaurant.getRestaurant().getRating() != null) {
+            float resultForThreeStars = 3 * restaurant.getRestaurant().getRating() / 5;
             holder.binding.itemListRestaurantRatingBar.setRating(resultForThreeStars);
         } else {
             try {
@@ -66,20 +70,20 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
         }
 
         // Set Picture
-        if (restaurant.getUrlPictureRestaurant() != null) {
+        if (restaurant.getRestaurant().getUrlPictureRestaurant() != null) {
             Glide.with(holder.binding.itemListRestaurantPicture.getContext())
                     .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference="
-                            + restaurant.getUrlPictureRestaurant() + "&key=" + BuildConfig.RR_KEY)
+                            + restaurant.getRestaurant().getUrlPictureRestaurant() + "&key=" + BuildConfig.RR_KEY)
                     .into(holder.binding.itemListRestaurantPicture);
         } else {
             holder.binding.itemListRestaurantPicture.setImageResource(R.drawable.image_restaurant);
         }
 
         // Set Distance
-        holder.binding.itemListRestaurantDistance.setText(String.valueOf(restaurant.getDistanceKm() + " m"));
+        holder.binding.itemListRestaurantDistance.setText(String.valueOf(restaurant.getRestaurant().getDistanceKm() + " m"));
 
         // Set Opening
-        if (restaurant.getOpeningHours() != null) {
+        if (restaurant.getRestaurant().getOpeningHours() != null) {
             holder.binding.itemListRestaurantOpening.setText(String.valueOf(openOrClose(restaurant)));
         } else {
             holder.binding.itemListRestaurantOpening.setText(String.valueOf(" "));
@@ -88,8 +92,8 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LatLng latLng = new LatLng(restaurant.getLatitude(), restaurant.getLongitude());
-                mMainViewModel.fetchOneRestaurantViewModel(latLng, restaurant.getId(), restaurant.getRating());
+                LatLng latLng = new LatLng(restaurant.getRestaurant().getLatitude(), restaurant.getRestaurant().getLongitude());
+                mMainViewModel.fetchOneRestaurantViewModel(latLng, restaurant.getRestaurant().getId(), restaurant.getRestaurant().getRating());
                 EventBus.getDefault().post(new ClickListRestaurantEvent(restaurant));
             }
         });
@@ -102,8 +106,8 @@ public class RestaurantsAdapter extends RecyclerView.Adapter<RestaurantsViewHold
 
     static String statusRestaurant = "";
 
-    public static String openOrClose(Restaurant restaurant) {
-        if (restaurant.getOpeningHours()) {
+    public static String openOrClose(RestaurantScreen restaurant) {
+        if (restaurant.getRestaurant().getOpeningHours()) {
             statusRestaurant = "Ouvert";
         } else {
             statusRestaurant = "Fermé";

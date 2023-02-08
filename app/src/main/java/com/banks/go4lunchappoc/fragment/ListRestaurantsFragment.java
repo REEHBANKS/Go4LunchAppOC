@@ -27,6 +27,8 @@ import com.banks.go4lunchappoc.events.ClickListRestaurantEvent;
 import com.banks.go4lunchappoc.events.SearchEvent;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.model.Restaurant;
+import com.banks.go4lunchappoc.model.RestaurantScreen;
+import com.banks.go4lunchappoc.useCase.ShowListRestaurantWithAllDataUseCase;
 import com.banks.go4lunchappoc.view.RestaurantsAdapter;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -36,6 +38,7 @@ import com.google.android.gms.location.LocationServices;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +53,10 @@ public class ListRestaurantsFragment extends Fragment {
     private FragmentListRestaurantBinding binding;
 
     //DATA
-    private List<Restaurant> restaurants;
+    private List<RestaurantScreen> restaurants;
     private RestaurantsAdapter adapter;
+
+    private ShowListRestaurantWithAllDataUseCase showListRestaurantWithAllDataUseCase;
 
     @SuppressLint("RestrictedApi")
     @Nullable
@@ -59,14 +64,41 @@ public class ListRestaurantsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListRestaurantBinding.inflate(getLayoutInflater(), container, false);
         this.configureRecyclerView();
+        showListRestaurantWithAllDataUseCase = new ShowListRestaurantWithAllDataUseCase();
+        showListRestaurantWithAllDataUseCase.observeRestaurants(this);
+        showListRestaurantWithAllDataUseCase.observeOneRestaurant(this);
         checkAccessRestaurant();
-        observeRestaurantLiveData();
-        observeOneRestaurantForTheSearchLiveData();
+      //  observeRestaurantLiveData();
+       // observeOneRestaurantForTheSearchLiveData();
+        observeOneRestaurantScreenLiveData();
+        observeRestaurantScreenLiveData();
         return binding.getRoot();
     }
 
-    // Get Current List Restaurant
+    public void observeRestaurantScreenLiveData(){
+        showListRestaurantWithAllDataUseCase.getResultRestaurantScreen().observe(getViewLifecycleOwner(), new Observer<List<RestaurantScreen>>() {
+            @Override
+            public void onChanged(List<RestaurantScreen> restaurantScreens) {
+                updateUI(restaurantScreens);
+            }
+        });
 
+    }
+
+    public void observeOneRestaurantScreenLiveData(){
+        showListRestaurantWithAllDataUseCase.getOneResultRestaurantScreen().observe(getViewLifecycleOwner(), new Observer<RestaurantScreen>() {
+            @Override
+            public void onChanged(RestaurantScreen restaurantScreen) {
+                if (isSearchEventReceived) {
+                    updateRestaurantSearch(restaurantScreen);
+                    isSearchEventReceived = false;
+                }
+            }
+        });
+    }
+
+    // Get Current List Restaurant
+/*
     public void observeRestaurantLiveData() {
         mMainViewModel.getRestaurantLiveData().observe(getViewLifecycleOwner(), new Observer<List<Restaurant>>() {
             @Override
@@ -91,7 +123,7 @@ public class ListRestaurantsFragment extends Fragment {
         });
     }
 
-
+*/
     // -----------------
     // CONFIGURATION RECYCLERVIEW
     // -----------------
@@ -106,13 +138,13 @@ public class ListRestaurantsFragment extends Fragment {
     // UPDATE UI
     // -------------------
     @SuppressLint("NotifyDataSetChanged")
-    public void updateUI(List<Restaurant> theRestaurants) {
+    public void updateUI(List<RestaurantScreen> theRestaurants) {
         restaurants.addAll(theRestaurants);
         adapter.notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateRestaurantSearch(Restaurant theRestaurant) {
+    public void updateRestaurantSearch(RestaurantScreen theRestaurant) {
         restaurants.clear();
         restaurants.add(theRestaurant);
         adapter.notifyDataSetChanged();
@@ -147,7 +179,7 @@ public class ListRestaurantsFragment extends Fragment {
     // Method Launching restaurant detail activity with a element restaurant
     // -------------------
 
-    private void launchRestaurantDetailActivity(Restaurant restaurant) {
+    private void launchRestaurantDetailActivity(RestaurantScreen restaurant) {
         Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
         intent.putExtra(RestaurantDetailActivity.RESTAURANT_KEY, restaurant);
         startActivity(intent);

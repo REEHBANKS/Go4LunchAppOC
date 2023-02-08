@@ -15,12 +15,13 @@ import com.banks.go4lunchappoc.fragment.ListUserInRestaurantDetailFragment;
 import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
 import com.banks.go4lunchappoc.manager.SelectedRestaurantManager;
 import com.banks.go4lunchappoc.model.Restaurant;
+import com.banks.go4lunchappoc.model.RestaurantScreen;
 import com.bumptech.glide.Glide;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
     public static String RESTAURANT_KEY = "RESTAURANT_KEY";
-    private Restaurant restaurant;
+    private RestaurantScreen restaurant;
     private ActivityRestaurantDetailBinding binding;
     private final SelectedRestaurantManager selectedRestaurantManager = SelectedRestaurantManager.getInstance();
     ListUserInRestaurantDetailFragment listUserInRestaurantDetailFragment = new ListUserInRestaurantDetailFragment();
@@ -31,9 +32,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRestaurantDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        restaurant = (Restaurant) getIntent().getSerializableExtra(RESTAURANT_KEY);
+        restaurant = (RestaurantScreen) getIntent().getSerializableExtra(RESTAURANT_KEY);
         updateUi();
-        fetchRestaurantId(restaurant.getId());
+        fetchRestaurantId(restaurant.getRestaurant().getId());
         getSupportFragmentManager().beginTransaction().add(R.id.containerDetail, listUserInRestaurantDetailFragment)
                 .commit();
 
@@ -45,19 +46,19 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         //-----------
         // Set View
         //----------
-        if (restaurant.getUrlPictureRestaurant() != null) {
+        if (restaurant.getRestaurant().getUrlPictureRestaurant() != null) {
             Glide.with(binding.pictureRestaurantDetail.getContext())
                     .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference="
-                            + restaurant.getUrlPictureRestaurant() + "&key=" + BuildConfig.RR_KEY)
+                            + restaurant.getRestaurant().getUrlPictureRestaurant() + "&key=" + BuildConfig.RR_KEY)
                     .into(binding.pictureRestaurantDetail);
         } else {
             binding.pictureRestaurantDetail.setImageResource(R.drawable.picture_restaurant_with_workers);
         }
 
-        binding.nameRestaurantDetail.setText(restaurant.getRestaurantName());
-        binding.addressRestaurantDetail.setText(restaurant.getRestaurantAddress());
-        if (restaurant.getRating() != null) {
-            float resultForThreeStars = 3 * restaurant.getRating() / 5;
+        binding.nameRestaurantDetail.setText(restaurant.getRestaurant().getRestaurantName());
+        binding.addressRestaurantDetail.setText(restaurant.getRestaurant().getRestaurantAddress());
+        if (restaurant.getRestaurant().getRating() != null) {
+            float resultForThreeStars = 3 * restaurant.getRestaurant().getRating() / 5;
             binding.itemListRestaurantRatingBar.setRating(resultForThreeStars);
         } else {
             try {
@@ -71,17 +72,17 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         // Set Button
         //----------
 
-        if (restaurant.getNumberPhone() != null) {
+        if (restaurant.getRestaurant().getNumberPhone() != null) {
             binding.buttonCallRestaurantDetail.setOnClickListener(v -> Toast.makeText(getApplicationContext()
-                    , restaurant.getNumberPhone(), Toast.LENGTH_SHORT).show());
+                    , restaurant.getRestaurant().getNumberPhone(), Toast.LENGTH_SHORT).show());
         } else {
             binding.buttonCallRestaurantDetail.setOnClickListener(v -> Toast.makeText(getApplicationContext()
                     , "Unavailable number!", Toast.LENGTH_SHORT).show());
         }
 
-        if (restaurant.getEmail() != null) {
+        if (restaurant.getRestaurant().getEmail() != null) {
             binding.buttonWebsiteRestaurantDetail.setOnClickListener(v -> Toast.makeText(getApplicationContext()
-                    , restaurant.getEmail(), Toast.LENGTH_SHORT).show());
+                    , restaurant.getRestaurant().getEmail(), Toast.LENGTH_SHORT).show());
         } else {
             binding.buttonCallRestaurantDetail.setOnClickListener(v -> Toast.makeText(getApplicationContext()
                     , "Unavailable website!", Toast.LENGTH_SHORT).show());

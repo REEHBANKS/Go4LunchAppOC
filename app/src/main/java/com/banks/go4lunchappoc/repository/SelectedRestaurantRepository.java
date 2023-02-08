@@ -1,5 +1,7 @@
 package com.banks.go4lunchappoc.repository;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.banks.go4lunchappoc.model.SelectedRestaurant;
@@ -77,18 +79,26 @@ public class SelectedRestaurantRepository {
 
     public Date dateToday() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 43);
+        calendar.set(Calendar.SECOND, 44);
         return calendar.getTime();
+
+
     }
+
+
 
     // -----------------
     // GET THE ALL USER SELECTED A RESTAURANT
     // -----------------
     public Task<QuerySnapshot> getAllUserSelectedRestaurantWithIdData() {
-        return getSelectedRestaurantCollection().whereEqualTo("restaurantId", restaurantID).whereEqualTo("dateSelected", dateToday()).get();
+        return getSelectedRestaurantCollection().whereEqualTo("restaurantId", restaurantID).get();
+
+
     }
+
+    // .whereEqualTo("dateSelected", dateToday())
 
     // -----------------
     // GET THE ALL SELECTED RESTAURANTS

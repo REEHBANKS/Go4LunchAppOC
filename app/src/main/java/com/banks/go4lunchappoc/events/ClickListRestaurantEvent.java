@@ -1,12 +1,13 @@
 package com.banks.go4lunchappoc.events;
 
 import com.banks.go4lunchappoc.model.Restaurant;
+import com.banks.go4lunchappoc.model.RestaurantScreen;
 
 public class ClickListRestaurantEvent {
 
-    public Restaurant restaurant;
+    public RestaurantScreen restaurant;
 
-    public ClickListRestaurantEvent(Restaurant restaurant) {
+    public ClickListRestaurantEvent(RestaurantScreen restaurant) {
         this.restaurant = restaurant;
     }
 }
