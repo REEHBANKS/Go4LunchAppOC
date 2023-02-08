@@ -77,17 +77,6 @@ public class SelectedRestaurantRepository {
         restaurantID = id;
     }
 
-    public Date dateToday() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 43);
-        calendar.set(Calendar.SECOND, 44);
-        return calendar.getTime();
-
-
-    }
-
-
 
     // -----------------
     // GET THE ALL USER SELECTED A RESTAURANT

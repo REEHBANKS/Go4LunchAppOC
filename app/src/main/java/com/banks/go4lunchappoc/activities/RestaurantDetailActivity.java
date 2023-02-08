@@ -13,6 +13,7 @@ import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.ActivityRestaurantDetailBinding;
 import com.banks.go4lunchappoc.fragment.ListUserInRestaurantDetailFragment;
 import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
+import com.banks.go4lunchappoc.manager.FavoriteRestaurantManager;
 import com.banks.go4lunchappoc.manager.SelectedRestaurantManager;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.model.RestaurantScreen;
@@ -24,6 +25,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private RestaurantScreen restaurant;
     private ActivityRestaurantDetailBinding binding;
     private final SelectedRestaurantManager selectedRestaurantManager = SelectedRestaurantManager.getInstance();
+    private final FavoriteRestaurantManager favoriteRestaurantManager = FavoriteRestaurantManager.getInstance();
     ListUserInRestaurantDetailFragment listUserInRestaurantDetailFragment = new ListUserInRestaurantDetailFragment();
 
 
@@ -35,6 +37,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         restaurant = (RestaurantScreen) getIntent().getSerializableExtra(RESTAURANT_KEY);
         updateUi();
         fetchRestaurantId(restaurant.getRestaurant().getId());
+        getFetchRestaurantId(restaurant.getRestaurant().getId());
         getSupportFragmentManager().beginTransaction().add(R.id.containerDetail, listUserInRestaurantDetailFragment)
                 .commit();
 
@@ -91,10 +94,18 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         binding.buttonSelectedRestaurant.setOnClickListener(v -> selectedRestaurantManager.createSelectedRestaurant());
 
+        // button favorite restaurant
+        binding.buttonLikeRestaurantDetail.setOnClickListener(v -> favoriteRestaurantManager.createFavoriteRestaurant());
     }
+
+
 
     public void fetchRestaurantId(String id) {
         selectedRestaurantManager.fetchRestaurantIdManager(id);
 
+    }
+
+    public void getFetchRestaurantId(String id) {
+        favoriteRestaurantManager.getFetchRestaurantId(id);
     }
 }
