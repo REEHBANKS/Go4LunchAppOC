@@ -10,9 +10,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.net.PortUnreachableException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,6 +23,7 @@ public class SelectedRestaurantRepository {
     private static volatile SelectedRestaurantRepository instance;
     private static final String SELECTED_RESTAURANTS_FIELD = "selected_restaurants";
     private static String restaurantID = null;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
 
     private SelectedRestaurantRepository() {
@@ -54,10 +57,11 @@ public class SelectedRestaurantRepository {
         if (user != null && restaurantID != null) {
             String restaurantId = restaurantID;
             String userId = user.getUid();
+            String dateDeJour = sdf.format(new Date());
 
-            SelectedRestaurant selectedRestaurantToCreate = new SelectedRestaurant(restaurantId, userId);
+            SelectedRestaurant selectedRestaurantToCreate = new SelectedRestaurant(restaurantId, userId, dateDeJour);
 
-            this.getSelectedRestaurantCollection().document(restaurantId).set(selectedRestaurantToCreate);
+            this.getSelectedRestaurantCollection().add(selectedRestaurantToCreate);
 
         }
 
@@ -78,13 +82,35 @@ public class SelectedRestaurantRepository {
     }
 
 
+
+
     // -----------------
     // GET THE ALL USER SELECTED A RESTAURANT
     // -----------------
     public Task<QuerySnapshot> getAllUserSelectedRestaurantWithIdData() {
-        return getSelectedRestaurantCollection().whereEqualTo("restaurantId", restaurantID).get();
+        String dateDuJour = sdf.format(new Date());
+        return getSelectedRestaurantCollection()
+                .whereEqualTo("restaurantId", restaurantID)
+                .whereEqualTo("dateSelected", dateDuJour)
+                .get();
 
 
+    }
+
+    // Get the currently logged in user
+    public Task<QuerySnapshot> getSelectedRestaurantForCurrentUser() {
+        FirebaseUser user = getCurrentUser();
+        String dateDuJour = sdf.format(new Date());
+        if (user == null) {
+            // User is not authenticated
+            return null;
+        }
+
+        // Build the query to get the selected restaurant
+        return getSelectedRestaurantCollection()
+                .whereEqualTo("userId", user.getUid())
+                .whereEqualTo("dateSelected", dateDuJour)
+                .get();
     }
 
     // .whereEqualTo("dateSelected", dateToday())

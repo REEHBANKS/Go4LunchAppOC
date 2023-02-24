@@ -28,6 +28,7 @@
 
     <string name="facebook_application_id">3430815187239798</string>
     <string name="fb_login_protocol_scheme">fb3430815187239798</string>
+    <string name="facebook_client_token">69ddda471073cf731c46cefaf1feda2d</string>
 
 
     <!-- to toggle the open close button of the navigation drawer -->
@@ -35,6 +36,9 @@
     <string name="nav_close">Close</string>
     <string name="info_no_email_found" />
     <string name="info_no_username_found" />
+    <string name="notification">Notification</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
 
 
 </resources>

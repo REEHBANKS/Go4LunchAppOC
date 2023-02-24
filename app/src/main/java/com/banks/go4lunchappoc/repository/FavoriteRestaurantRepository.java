@@ -2,6 +2,7 @@ package com.banks.go4lunchappoc.repository;
 
 import androidx.annotation.Nullable;
 
+import com.banks.go4lunchappoc.model.FavoriteRestaurant;
 import com.banks.go4lunchappoc.model.SelectedRestaurant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,9 +47,9 @@ public class FavoriteRestaurantRepository {
             String restaurantId = restaurantID;
             String userId = user.getUid();
 
-            SelectedRestaurant selectedRestaurantToCreate = new SelectedRestaurant(restaurantId, userId);
+            FavoriteRestaurant favoriteRestaurantToCreate = new FavoriteRestaurant(restaurantId, userId);
 
-            this.getFavoriteRestaurantCollection().document(restaurantId).set(selectedRestaurantToCreate);
+            this.getFavoriteRestaurantCollection().document(restaurantId).set(favoriteRestaurantToCreate);
 
         }
     }

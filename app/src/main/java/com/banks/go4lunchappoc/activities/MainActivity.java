@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -30,6 +31,8 @@ import com.banks.go4lunchappoc.fragment.ListRestaurantsFragment;
 import com.banks.go4lunchappoc.fragment.ListUserInRestaurantDetailFragment;
 import com.banks.go4lunchappoc.fragment.MapFragment;
 import com.banks.go4lunchappoc.fragment.WorkmatesFragment;
+import com.banks.go4lunchappoc.fragment.navigationDrawerFragment.AccountFragment;
+import com.banks.go4lunchappoc.fragment.navigationDrawerFragment.SettingsFragment;
 import com.banks.go4lunchappoc.injection.ListRestaurantViewModel;
 import com.banks.go4lunchappoc.injection.MapViewModel;
 import com.banks.go4lunchappoc.manager.UserManager;
@@ -142,7 +145,39 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
+        // Set up the NavigationView
+        NavigationView navigationView = findViewById(R.id.drawer_navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Handle menu item clicks
+                switch (item.getItemId()) {
+                    case R.id.nav_account:
+                        // Replace content with the account fragment
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, new AccountFragment())
+                                .commit();
+                        break;
+                    case R.id.nav_settings:
+                        // Show the settings dialog
+                        DialogFragment settingsDialog = new SettingsFragment();
+                        settingsDialog.show(getSupportFragmentManager(), "SettingsDialog");
+                        break;
+                    case R.id.nav_logout:
+                        // Handle logout action
+                       // logout();
+                        break;
+                }
+
+                // Close the NavigationDrawer
+                drawerLayout.closeDrawer(GravityCompat.START);
+
+                return true;
+            }
+        });
     }
+
+
 
     public void updateNavHeader() {
         if (userManager.isCurrentUserLogged()) {

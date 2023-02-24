@@ -56,9 +56,6 @@ public class ListUserInRestaurantDetailFragment extends Fragment {
     }
 
 
-
-
-
     // -----------------
     // GET THE USERS
     // -----------------
@@ -92,45 +89,16 @@ public class ListUserInRestaurantDetailFragment extends Fragment {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 SelectedRestaurant selectedRestaurant = document.toObject(SelectedRestaurant.class);
-                                Date dateSelected = selectedRestaurant.getDateSelected();
-                                Date dateToday = Calendar.getInstance().getTime();
-                                if (sameDay(dateSelected,dateToday)){
-                                    listAllSelectedRestaurants.add(selectedRestaurant);
-                                    Log.d("SelectedRestaurant", "Information: " + selectedRestaurant.getRestaurantId());
-                                }
-
+                                listAllSelectedRestaurants.add(selectedRestaurant);
+                                Log.d("SelectedRestaurant", "Information: " + selectedRestaurant.getRestaurantId() + "date" + selectedRestaurant.getDateSelected());
                             }
                         }
+
+
                         sortUsersByID();
                     }
                 });
     }
-
-    // -----------------
-    // Get the compare between two dates (only the day)
-    // -----------------
-    public Boolean sameDay(Date dateOne, Date dateTwo){
-        Calendar calendar1 = Calendar.getInstance();
-        Calendar calendar2 = Calendar.getInstance();
-
-        calendar1.setTime(dateOne);
-        calendar2.setTime(dateTwo);
-
-        calendar1.set(Calendar.HOUR_OF_DAY, 0);
-        calendar1.set(Calendar.MINUTE, 0);
-        calendar1.set(Calendar.SECOND, 0);
-        calendar1.set(Calendar.MILLISECOND, 0);
-
-        calendar2.set(Calendar.HOUR_OF_DAY, 0);
-        calendar2.set(Calendar.MINUTE, 0);
-        calendar2.set(Calendar.SECOND, 0);
-        calendar2.set(Calendar.MILLISECOND, 0);
-
-        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
-                calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
-                calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
-    }
-
 
 
     public void sortUsersByID() {

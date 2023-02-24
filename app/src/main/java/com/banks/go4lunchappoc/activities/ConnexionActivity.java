@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.banks.go4lunchappoc.R;
 import com.banks.go4lunchappoc.databinding.ActivityConnexionBinding;
 import com.banks.go4lunchappoc.manager.UserManager;
+import com.facebook.FacebookSdk;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -32,6 +33,8 @@ public class ConnexionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(this);
         binding = ActivityConnexionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setupEmailListeners();

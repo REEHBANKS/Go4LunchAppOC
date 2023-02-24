@@ -68,8 +68,6 @@ public class ListRestaurantsFragment extends Fragment {
         showListRestaurantWithAllDataUseCase.observeRestaurants(this);
         showListRestaurantWithAllDataUseCase.observeOneRestaurant(this);
         checkAccessRestaurant();
-      //  observeRestaurantLiveData();
-       // observeOneRestaurantForTheSearchLiveData();
         observeOneRestaurantScreenLiveData();
         observeRestaurantScreenLiveData();
         return binding.getRoot();
