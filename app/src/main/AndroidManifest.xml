@@ -5,7 +5,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Go4LunchAppOC"
         tools:targetApi="m">
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library android:name="java.net.HttpURLConnection" android:required="false"/>
         <activity
             android:name="com.banks.go4lunchappoc.activities.MainActivity"
             android:exported="false">
@@ -26,6 +30,7 @@
         </activity>
         <activity
             android:name="com.banks.go4lunchappoc.activities.RestaurantDetailActivity"
+            android:launchMode="singleTop"
             android:exported="false"
             android:label="@string/title_activity_restaurant_detail"
             android:theme="@style/Theme.Go4LunchAppOC.NoActionBar">
@@ -48,10 +53,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="${JS_KEY}"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id"
+            />
         <meta-data
             android:name="com.facebook.sdk.ClientToken"
-            android:value="${GS_KEY}" />
+            android:value="${GS_KEY}"
+            />
+
+        <receiver android:name=".util.NotificationReceiver" />
+
     </application>
 
 </manifest>

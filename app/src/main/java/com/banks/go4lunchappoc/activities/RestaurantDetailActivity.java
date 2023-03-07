@@ -17,6 +17,7 @@ import com.banks.go4lunchappoc.manager.FavoriteRestaurantManager;
 import com.banks.go4lunchappoc.manager.SelectedRestaurantManager;
 import com.banks.go4lunchappoc.model.Restaurant;
 import com.banks.go4lunchappoc.model.RestaurantScreen;
+import com.banks.go4lunchappoc.util.AlarmManagerHelper;
 import com.bumptech.glide.Glide;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
@@ -92,7 +93,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
 
 
-        binding.buttonSelectedRestaurant.setOnClickListener(v -> selectedRestaurantManager.createSelectedRestaurant());
+        // button selected restaurant
+        binding.buttonSelectedRestaurant.setOnClickListener(v -> {
+            selectedRestaurantManager.createSelectedRestaurant();
+            AlarmManagerHelper.onRestaurantSelected(this,restaurant.getRestaurant().getId());
+        });
 
         // button favorite restaurant
         binding.buttonLikeRestaurantDetail.setOnClickListener(v -> favoriteRestaurantManager.createFavoriteRestaurant());

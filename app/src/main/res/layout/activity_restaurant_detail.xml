@@ -46,7 +46,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Le Zinc"
                 android:textColor="@color/white"
-                android:textSize="30sp" />
+                android:textSize="25sp" />
 
             <RatingBar
                 android:id="@+id/item_list_restaurant_rating_bar"
