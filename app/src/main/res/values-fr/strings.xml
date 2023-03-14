@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4LunchAppOC</string>
+    <string name="app_name_toolbar">J\'ai faim !</string>
+    <!-- TODO: Supprimer ou modifier ce texte fictif -->
+    <string name="hello_blank_fragment">Bonjour fragment vide</string>
+    <string name="title_activity_restaurant_detail">RestaurantDetailActivity</string>
+    <!-- Chaînes de caractères utilisées pour les fragments de navigation -->
+    <string name="first_fragment_label">Premier fragment</string>
+    <string name="second_fragment_label">Deuxième fragment</string>
+    <string name="prompt_email">E-mail</string>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">Se connecter ou s\'inscrire</string>
+    <string name="action_sign_in_short">Se connecter</string>
+    <string name="welcome">Bienvenue !</string>
+    <string name="invalid_username">Nom d\'utilisateur non valide</string>
+    <string name="invalid_password">Le mot de passe doit comporter plus de 5 caractères</string>
+    <string name="login_failed">La connexion a échoué</string>
+    <string name="next">Suivant</string>
+    <string name="previous">Précédent</string>
+    <string name="bottom_facebook">Se connecter avec Facebook</string>
+    <string name="bottom_gmail">Se connecter avec Google</string>
+    <string name="bottom_twitter">Se connecter avec Twitter</string>
+    <string name="bottom_login">Se connecter avec Login</string>
+    <string name="connection_succeed">Connexion réussie !</string>
+    <string name="error_authentication_canceled">Authentification annulée !</string>
+    <string name="error_no_internet">Pas d\'internet !</string>
+    <string name="error_unknown_error">Erreur inconnue !</string>
+    <string name="Restaurant_reminder">Rappel de restaurant</string>
+    <string name="facebook_application_id">3430815187239798</string>
+    <string name="fb_login_protocol_scheme">fb3430815187239798</string>
+    <string name="facebook_client_token">69ddda471073cf731c46cefaf1feda2d</string>
+
+    <!-- pour basculer le bouton d'ouverture/fermeture du tiroir de navigation -->
+    <string name="nav_open">Ouvrir</string>
+    <string name="nav_close">Fermer</string>
+    <string name="info_no_email_found" />
+    <string name="info_no_username_found" />
+    <string name="notification">Notification</string>
+    <string name="on">Activé</string>
+    <string name="off">Désactivé</string>
+    <string name="today_s_lunch">Aujourd\'hui, c\'est le d\\u00E9jeuner</string>
+    <string name="have_you_decided_on_a_restaurant_yet">Avez-vous décidé d\'un restaurant ?</string>
+    <string name="call">APPELER</string>
+    <string name="website">SITE WEB</string>
+    <string name="like">J\'AIME</string>
+    <string name="_5_avenue_des_renards">5 avenue des Renards</string>
+    <string name="le_zinc">Le Zinc</string>
+    <string name="todo">À FAIRE</string>
+    <string name="todo2">À FAIRE</string>
+    <string name="todo3">À FAIRE</string>
+    <string name="todo4">À FAIRE</string>
+    <string name="todo5">À FAIRE5</string>
+    <string name="todo6">À FAIRE</string>
+    <string name="nom_du_restaurant">Nom du restaurant</string>
+    <string name="todo7">À FAIRE</string>
+    <string name="adresse">adresse</string>
+    <string name="todo8">À FAIRE</string>
+    <string name="le_zinc1">Le Zinc</string>
+    <string name="_20_rue_de_paris">20 rue de Paris</string>
+    <string name="open">Ouvert</string>
+    <string name="_200m">200m</string>
+    <string name="todo10">À FAIRE</string>
+    <string name="_2">(2)</string>
+    <string name="kylian_is_eating_french_chez_guy">Kylian mange français (Chez Guy)</string>
+    <string name="todo11">À FAIRE</string>
+    <string name="todo12">À FAIRE</string>
+    <string name="setting">Paramètres</string>
+    <string name="todo13">À FAIRE</string>
+    <string name="kylian">Kylian</string>
+    <string name="go4lunch">Go4Lunch</string>
+    <string name="todo14">À FAIRE</string>
+    <string name="kyllian_mbappe">Kyllian Mbappe</string>
+    <string name="km_gmail_com">km@gmail.com</string>
+    <string name="map_view">Vue Carte</string>
+    <string name="list_view">Vue Liste</string>
+    <string name="workmates">Collègues</string>
+    <string name="your_lunch">VOTRE DÉJEUNER</string>
+    <string name="settings">PARAMÈTRES</string>
+    <string name="logout">DÉCONNEXION</string>
+
+
+
+
+
+
+
+
+</resources>
