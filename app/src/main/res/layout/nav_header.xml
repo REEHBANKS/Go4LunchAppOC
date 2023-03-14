@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="200dp"
@@ -12,24 +13,25 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:text="Go4Lunch"
+        android:text="@string/go4lunch"
         android:layout_marginBottom="40dp"
         android:layout_marginStart="30dp"
-        android:textSize="40dp"
+        android:textSize="40sp"
         />
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="ExtraText">
 
         <ImageView
             android:id="@+id/picture_nav_header"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/mbappe_picture"
-            />
+            android:contentDescription="@string/todo14" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:text="Kyllian Mbappe"
+                android:text="@string/kyllian_mbappe"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 />
@@ -52,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="km@gmail.com"
+                android:text="@string/km_gmail_com"
                 android:textSize="14sp"
                 android:layout_marginTop="2dp"
                 android:layout_marginStart="10dp"

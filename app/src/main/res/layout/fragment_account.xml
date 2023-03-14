@@ -9,7 +9,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -25,7 +26,7 @@
                 android:padding="16dp"
                 android:text="@string/today_s_lunch"
                 android:textAppearance="?android:textAppearanceLarge"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:textColor="@color/switch_thumb_color"
                 android:textStyle="bold" />
             <TextView
@@ -45,7 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/restaurant_image_view"
@@ -53,13 +55,14 @@
                     android:layout_height="68dp"
                     android:layout_marginStart="45dp"
                     android:layout_marginEnd="15dp"
-                    android:src="@drawable/picture_restaurant_with_workers"/>
+                    android:src="@drawable/picture_restaurant_with_workers"
+                    android:contentDescription="@string/todo6" />
 
                 <TextView
                     android:id="@+id/restaurant_name_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nom du restaurant"
+                    android:text="@string/nom_du_restaurant"
                     android:layout_gravity="center"
                     android:textColor="@color/switch_thumb_color"
                     android:textSize="18sp"
@@ -73,7 +76,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/restaurant_ic_address"
@@ -81,7 +85,8 @@
                     android:layout_height="28dp"
                     android:src="@drawable/icon_green_lunch"
                     android:layout_marginStart="50dp"
-                    android:layout_marginEnd="30dp"/>
+                    android:layout_marginEnd="30dp"
+                    android:contentDescription="@string/todo7" />
 
                 <TextView
                     android:id="@+id/restaurant_address_text_view"
@@ -90,7 +95,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="4dp"
                     android:textColor="@color/switch_thumb_color"
-                    android:text="adresse "
+                    android:text="@string/adresse"
                     android:textAppearance="?android:textAppearanceMedium" />
 
             </LinearLayout>

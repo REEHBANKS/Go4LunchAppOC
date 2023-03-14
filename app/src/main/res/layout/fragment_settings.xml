@@ -63,12 +63,13 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_close_24"
         android:layout_gravity="top|end"
-        android:layout_margin="1dp"/>
+        android:layout_margin="1dp"
+        android:contentDescription="@string/todo12" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Setting"
+        android:text="@string/setting"
         android:textStyle="bold"
         android:textSize="24sp"
         android:textColor="@color/white"
